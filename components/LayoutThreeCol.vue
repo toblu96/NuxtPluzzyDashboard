@@ -52,15 +52,16 @@
                     id="search"
                     name="search"
                     class="block w-full pl-10 pr-3 py-2 border border-transparent rounded-md leading-5 bg-pink-200 bg-opacity-25 text-pink-100 placeholder-pink-200 focus:outline-none focus:bg-white focus:ring-0 focus:placeholder-pink-400 focus:text-gray-900 sm:text-sm"
-                    placeholder="Search projects"
+                    placeholder="Search files"
                     type="search"
                   />
                 </div>
               </div>
             </div>
+            <!-- Mobile menu button -->
             <div class="flex lg:hidden">
-              <!-- Mobile menu button -->
               <button
+                @click="isOpen = !isOpen"
                 class="bg-pink-600 inline-flex items-center justify-center p-2 rounded-md text-pink-400 hover:text-white hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-pink-600 focus:ring-white"
                 aria-expanded="false"
               >
@@ -72,6 +73,7 @@
               Menu open: "hidden", Menu closed: "block"
             -->
                 <svg
+                  v-show="!isOpen"
                   class="block h-6 w-6"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -93,7 +95,8 @@
               Menu open: "block", Menu closed: "hidden"
             -->
                 <svg
-                  class="hidden h-6 w-6"
+                  v-show="isOpen"
+                  class="block h-6 w-6"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -109,7 +112,7 @@
                 </svg>
               </button>
             </div>
-            <!-- Links section -->
+            <!-- Desktop menu -->
             <div class="hidden lg:block lg:w-80">
               <div class="flex items-center justify-end">
                 <div class="flex">
@@ -125,48 +128,49 @@
                   >
                 </div>
                 <!-- Profile dropdown -->
-
                 <user-menu />
               </div>
             </div>
           </div>
         </div>
 
+        <!-- Mobile menu content -->
         <!--
       Mobile menu, toggle classes based on menu state.
 
       Menu open: "block", Menu closed: "hidden"
     -->
-        <div class="hidden lg:hidden">
+        <div v-show="isOpen" class="block lg:hidden">
           <div class="px-2 pt-2 pb-3">
             <a
               href="#"
-              class="block px-3 py-2 rounded-md text-base font-medium text-white bg-indigo-800"
+              class="block px-3 py-2 rounded-md text-base font-medium text-pink-200 hover:text-pink-100 hover:bg-pink-600"
               >Dashboard</a
             >
             <a
               href="#"
-              class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-indigo-200 hover:text-indigo-100 hover:bg-indigo-600"
+              class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-pink-200 hover:text-pink-100 hover:bg-pink-600"
               >Support</a
             >
           </div>
-          <div class="pt-4 pb-3 border-t border-indigo-800">
+          <div class="pt-4 pb-3 border-t border-pink-600">
             <div class="px-2">
               <a
                 href="#"
-                class="block px-3 py-2 rounded-md text-base font-medium text-indigo-200 hover:text-indigo-100 hover:bg-indigo-600"
+                class="block px-3 py-2 rounded-md text-base font-medium text-pink-200 hover:text-pink-100 hover:bg-pink-600"
                 >Your Profile</a
               >
               <a
                 href="#"
-                class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-indigo-200 hover:text-indigo-100 hover:bg-indigo-600"
+                class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-pink-200 hover:text-pink-100 hover:bg-pink-600"
                 >Settings</a
               >
-              <a
-                href="#"
-                class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-indigo-200 hover:text-indigo-100 hover:bg-indigo-600"
-                >Sign out</a
+              <button
+                @click="$auth.logout()"
+                class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-pink-200 hover:text-pink-100 hover:bg-pink-600"
               >
+                Sign out
+              </button>
             </div>
           </div>
         </div>
@@ -214,3 +218,13 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data: function () {
+    return {
+      isOpen: false,
+    };
+  },
+};
+</script>
