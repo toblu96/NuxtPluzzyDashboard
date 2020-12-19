@@ -34,7 +34,33 @@ export default {
     '@nuxtjs/pwa',
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
+    '@nuxtjs/auth-next',
   ],
+  router: {
+    middleware: ['auth']
+  },
+  auth: {
+    redirect: {
+      login: '/login',
+      logout: '/',
+      callback: '/login/callback',
+      home: '/secret'
+    },
+    // https://docs.gitlab.com/ee/api/oauth2.html#web-application-flow
+    strategies: {
+      github: {
+        clientId: process.env.GITLAB_CLIENTID,
+        clientSecret: process.env.GITLAB_CLIENTSECRET,
+        endpoints: {
+          authorization: process.env.GITLAB_BASEURL + '/oauth/authorize',
+          token: process.env.GITLAB_BASEURL + '/oauth/token',
+          userInfo: process.env.GITLAB_BASEURL + '/api/v4/user',
+        },
+        scope: 'api read_user write_repository',
+        grantType: 'authorization_code',
+      },
+    }
+  },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {},

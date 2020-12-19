@@ -3,7 +3,7 @@
     <div>
       <Logo />
       <h1 class="title">NuxtPluzzyDashboard</h1>
-      <div class="links">
+      <div class="links flex justify-center space-x-4">
         <a
           href="https://nuxtjs.org/"
           target="_blank"
@@ -20,13 +20,33 @@
         >
           GitHub
         </a>
+
+        <button
+          type="button"
+          class="inline-flex items-center px-6 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          @click="$auth.loginWith('github')"
+        >
+          Login to GitLab
+        </button>
+        <button
+          v-if="$auth.loggedIn"
+          type="button"
+          class="inline-flex items-center px-6 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          @click="$auth.logout()"
+        >
+          Logout
+        </button>
+
+        <NuxtLink to="/secret">Secret page</NuxtLink>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  auth: false,
+};
 </script>
 
 <style>
