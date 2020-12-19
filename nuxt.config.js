@@ -44,7 +44,7 @@ export default {
       login: '/login',
       logout: '/',
       callback: '/login/callback',
-      home: '/secret'
+      home: '/project'
     },
     // https://docs.gitlab.com/ee/api/oauth2.html#web-application-flow
     strategies: {
