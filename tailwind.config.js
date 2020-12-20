@@ -12,7 +12,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        amber: colors.amber,
+        cyan: colors.cyan,
         orange: colors.orange,
       }
     },

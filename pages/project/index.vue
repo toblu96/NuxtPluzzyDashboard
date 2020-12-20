@@ -1,6 +1,8 @@
 <template>
   <layout-three-col>
-    <template slot="sidebar">Sidebar</template>
+    <template slot="sidebar">
+      <project-sidebar />
+    </template>
     <template slot="main">hello</template>
     <template slot="right">right </template>
   </layout-three-col>
