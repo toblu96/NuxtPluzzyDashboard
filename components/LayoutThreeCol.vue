@@ -185,7 +185,7 @@
           >
             <div class="h-full pl-4 pr-6 py-6 sm:pl-6 lg:pl-8 xl:pl-0">
               <!-- Start left column area -->
-              <div class="h-full" style="min-height: 12rem">
+              <div class="h-full">
                 <slot name="sidebar"></slot>
               </div>
               <!-- End left column area -->
@@ -195,7 +195,7 @@
           <div class="bg-white lg:min-w-0 lg:flex-1">
             <div class="h-full py-6 px-4 sm:px-6 lg:px-8">
               <!-- Start main area-->
-              <div class="h-full" style="min-height: 36rem">
+              <div class="h-full">
                 <slot name="main"></slot>
               </div>
               <!-- End main area -->
@@ -208,7 +208,7 @@
         >
           <div class="h-full pl-6 py-6 lg:w-80">
             <!-- Start right column area -->
-            <div class="h-full" style="min-height: 16rem">
+            <div class="h-full">
               <slot name="right"></slot>
             </div>
             <!-- End right column area -->
