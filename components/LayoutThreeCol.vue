@@ -193,13 +193,11 @@
           </div>
 
           <div class="bg-white lg:min-w-0 lg:flex-1">
-            <div class="h-full py-6 px-4 sm:px-6 lg:px-8">
-              <!-- Start main area-->
-              <div class="h-full">
-                <slot name="main"></slot>
-              </div>
-              <!-- End main area -->
+            <!-- Start main area-->
+            <div class="h-full">
+              <slot name="main"></slot>
             </div>
+            <!-- End main area -->
           </div>
         </div>
 

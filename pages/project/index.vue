@@ -3,8 +3,12 @@
     <template slot="sidebar">
       <project-sidebar />
     </template>
-    <template slot="main">hello</template>
-    <template slot="right">right </template>
+    <template slot="main">
+      <projects-list />
+    </template>
+    <template slot="right">
+      <activity-feed />
+    </template>
   </layout-three-col>
 </template>
 

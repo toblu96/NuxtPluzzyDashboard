@@ -17,14 +17,17 @@ export default {
   ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: [
-  ],
+
+  plugins: [],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
 
   // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
-  buildModules: ['@nuxtjs/tailwindcss'],
+  buildModules: [
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/moment',
+  ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
@@ -36,8 +39,13 @@ export default {
     '@nuxt/content',
     '@nuxtjs/auth-next',
   ],
+  env: {
+    GITLAB_BASEURL: process.env.GITLAB_BASEURL,
+    GITLAB_PROJECT_PATH: process.env.GITLAB_PROJECT_PATH
+  },
   router: {
-    middleware: ['auth']
+    middleware: ['auth'],
+    prefetchLinks: false,
   },
   auth: {
     redirect: {
@@ -56,10 +64,13 @@ export default {
           token: process.env.GITLAB_BASEURL + '/oauth/token',
           userInfo: process.env.GITLAB_BASEURL + '/api/v4/user',
         },
-        scope: 'api read_user write_repository',
+        scope: 'api read_api read_user write_repository',
         grantType: 'authorization_code',
       },
-    }
+    },
+    plugins: [
+      '~/plugins/gitApi.js'
+    ]
   },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)

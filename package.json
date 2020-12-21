@@ -15,9 +15,10 @@
     "@nuxtjs/pwa": "^3.0.2",
     "@tailwindcss/forms": "^0.2.1",
     "core-js": "^3.6.5",
-    "nuxt": "^2.14.6"
+    "nuxt": "^2.14.12"
   },
   "devDependencies": {
+    "@nuxtjs/moment": "^1.6.1",
     "@nuxtjs/tailwindcss": "^3.4.0",
     "@tailwindcss/postcss7-compat": "^2.0.2",
     "autoprefixer": "^9.8.6",
