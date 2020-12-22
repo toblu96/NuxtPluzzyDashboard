@@ -137,7 +137,6 @@ export default {
   },
   async mounted() {
     this.files = await this.getRichProjectFileData();
-    console.log(this.files[0]);
   },
   methods: {
     async getRichProjectFileData() {
