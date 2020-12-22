@@ -31,7 +31,10 @@
         <!-- More items... -->
       </ul>
       <div class="py-4 text-sm border-t border-gray-200">
-        <a href="#" class="text-orange-600 font-semibold hover:text-orange-900"
+        <a
+          :href="$gitApi.getDefaultPath() + 'commits/master'"
+          target="_blank"
+          class="text-orange-600 font-semibold hover:text-orange-900"
           >View all activity <span aria-hidden="true">&rarr;</span></a
         >
       </div>

@@ -10,6 +10,7 @@ export default function (context, inject) {
     const filePath = 'deploy/telegraf/OPC_UA'
 
     inject('gitApi', {
+        getDefaultPath,
         getProjecs,
         getProjectTree,
         getProjectFile,
@@ -87,6 +88,14 @@ export default function (context, inject) {
             statusText
         }
     }
+
+    function getDefaultPath() {
+        return context.env.GITLAB_BASEURL +
+            "/" +
+            context.env.GITLAB_PROJECT_PATH +
+            "/-/"
+    }
+
     async function unWrapFirst(response) {
         const tmpJson = await response.json()
         const json = []
