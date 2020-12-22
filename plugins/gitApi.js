@@ -4,7 +4,10 @@ export default function (context, inject) {
     const apiVersion = 'v4'
     const token = context.store.$auth.strategy.token.get()
     const headers = {
-        "Authorization": token
+        "Authorization": token,
+        'Access-Control-Allow-Origin': '*',
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
     }
 
     const filePath = 'deploy/telegraf/OPC_UA'
@@ -18,6 +21,8 @@ export default function (context, inject) {
         getFileCommits,
         getLastFileCommit,
         getUserAvatar,
+        pushFileToRepo,
+        updateFileInRepo,
     })
 
     async function getProjecs() {
@@ -38,7 +43,6 @@ export default function (context, inject) {
 
     async function getProjectFile(filePath) {
         try {
-
             const path = filePath.replace(/\//g, '%2F').replace(/\./g, '%2E')
             return unWrap(await fetch(`${baseUrl}/api/${apiVersion}/projects/${projectPath}/repository/files/${path}?ref=master`, { headers }))
         } catch (error) {
@@ -78,6 +82,57 @@ export default function (context, inject) {
         }
     }
 
+    async function pushFileToRepo(file, commitMessage = 'Upload new file(s)') {
+        const filePath = 'graphics/'
+        try {
+            const filename = file.name
+            filename.replace(/\s/g, '%20').replace(/\./g, '%2E')
+            const path = filePath.replace(/\//g, '%2F').replace(/\./g, '%2E')
+
+            let contentBuffer = await readFileAsync(file);
+
+            return unWrap(await fetch(`${baseUrl}/api/${apiVersion}/projects/${projectPath}/repository/files/${path}${filename}`, {
+                headers,
+                method: 'POST',
+                body: JSON.stringify({
+                    branch: "master",
+                    author_email: context.store.$auth.user.email,
+                    author_name: context.store.$auth.user.name,
+                    content: contentBuffer,
+                    commit_message: commitMessage
+                })
+            }))
+        } catch (error) {
+            return getErrorResponse(error)
+        }
+    }
+
+    async function updateFileInRepo(file, commitMessage = 'Upload new file(s)') {
+        const filePath = 'graphics/'
+        try {
+            const filename = file.name
+            filename.replace(/\s/g, '%20').replace(/\./g, '%2E')
+            const path = filePath.replace(/\//g, '%2F').replace(/\./g, '%2E')
+
+            let contentBuffer = await readFileAsync(file);
+
+            return unWrap(await fetch(`${baseUrl}/api/${apiVersion}/projects/${projectPath}/repository/files/${path}${filename}`, {
+                headers,
+                method: 'PUT',
+                body: JSON.stringify({
+                    branch: "master",
+                    author_email: context.store.$auth.user.email,
+                    author_name: context.store.$auth.user.name,
+                    content: contentBuffer,
+                    commit_message: commitMessage
+                })
+            }))
+        } catch (error) {
+            return getErrorResponse(error)
+        }
+    }
+
+
     async function unWrap(response) {
         const json = await response.json()
         const { ok, status, statusText } = response
@@ -116,5 +171,25 @@ export default function (context, inject) {
             statusText: error.message,
             json: {}
         }
+    }
+
+    function readFileAsync(file) {
+        return new Promise((resolve, reject) => {
+            let reader = new FileReader();
+
+            reader.onload = () => {
+                resolve(reader.result);
+            };
+
+            reader.onerror = () => {
+                reject(new Error("Whoops! Could not read file.." + reader.result));
+            }
+
+            if (file.type == 'image/svg+xml') {
+                reader.readAsText(file);
+            } else {
+                reader.readAsArrayBuffer(file);
+            }
+        })
     }
 }
