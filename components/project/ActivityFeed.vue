@@ -3,9 +3,9 @@
     <div class="pt-6 pb-2">
       <h2 class="text-sm font-semibold">Activity</h2>
     </div>
-    <div>
+    <div v-if="commits[0] != undefined">
       <ul class="divide-y divide-gray-200">
-        <li v-for="commit in commits.slice(0, 5)" :key="commit.id" class="py-4">
+        <li v-for="commit in commits" :key="commit.id" class="py-4">
           <div class="flex space-x-3">
             <img class="h-6 w-6 rounded-full" :src="commit.avatar_url" alt="" />
             <div class="flex-1 space-y-1">
@@ -39,6 +39,14 @@
         >
       </div>
     </div>
+    <!-- Activity Skeleton Loader -->
+    <div v-else class="animate-pulse flex space-x-3">
+      <div class="rounded-full bg-orange-200 h-6 w-6"></div>
+      <div class="flex-1 space-y-2 py-1">
+        <div class="h-4 bg-orange-200 rounded w-full"></div>
+        <div class="h-4 bg-orange-200 rounded w-3/4"></div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -64,7 +72,9 @@ export default {
         });
       }
 
-      const commits = responses[0].json;
+      // only get a few ones (loading time..)
+      const commits = responses[0].json.slice(0, 5);
+
       //   add avatar url
       await Promise.all(
         commits.map(async (commit, index) => {
