@@ -54,6 +54,7 @@
                     class="block w-full pl-10 pr-3 py-2 border border-transparent rounded-md leading-5 bg-pink-200 bg-opacity-25 text-pink-100 placeholder-pink-200 focus:outline-none focus:bg-white focus:ring-0 focus:placeholder-pink-400 focus:text-gray-900 sm:text-sm"
                     placeholder="Search files"
                     type="search"
+                    v-model="searchString"
                   />
                 </div>
               </div>
@@ -218,11 +219,25 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+import debounce from "lodash/debounce";
+
 export default {
   data: function () {
     return {
       isOpen: false,
+      searchString: "",
     };
+  },
+  watch: {
+    searchString: debounce(function (newVal, oldVal) {
+      this.updateSearchString(newVal);
+    }, 500),
+  },
+  methods: {
+    ...mapMutations({
+      updateSearchString: "search/updateSearchString",
+    }),
   },
 };
 </script>
