@@ -6,7 +6,7 @@
     >
       <li
         v-for="file in files"
-        :key="file.id"
+        :key="file.path"
         class="relative pl-4 pr-6 py-5 hover:bg-gray-50 sm:py-6 sm:pl-6 lg:pl-8 xl:pl-6"
       >
         <div class="flex items-center justify-between space-x-4">
