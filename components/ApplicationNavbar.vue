@@ -44,6 +44,8 @@
                 placeholder="Search files"
                 type="search"
                 v-model="searchString"
+                ref="searchInput"
+                @keydown.esc="$refs.searchInput.blur()"
               />
             </div>
           </div>
