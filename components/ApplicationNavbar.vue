@@ -130,7 +130,7 @@
             <div v-else>
               <button
                 @click="$auth.loginWith('github')"
-                class="bg-pink-100 border border-transparent rounded-md shadow py-2 px-6 ml-2 inline-flex items-center text-sm font-medium text-orange-600 hover:text-orange-500"
+                class="bg-pink-100 border border-transparent rounded-md shadow py-2 px-6 ml-2 inline-flex items-center text-sm font-medium text-orange-600 hover:text-orange-500 focus:outline-none"
               >
                 Sign in
               </button>
