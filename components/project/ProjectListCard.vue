@@ -113,6 +113,19 @@
           </div>
         </div>
       </li>
+      <!-- No Search result -->
+      <div
+        v-show="
+          getSearchString != '' &&
+          findEntry(files, getSearchString)[0] == undefined
+        "
+        class="flex flex-col p-4"
+      >
+        <div class="text-lg">
+          Can't find any files with the name containing "{{ getSearchString }}"
+        </div>
+        <img src="~/assets/images/search-result-not-found.png" />
+      </div>
     </ul>
     <!-- Profile Skeleton Loader -->
     <div
