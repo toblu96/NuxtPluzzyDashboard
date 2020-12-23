@@ -39,7 +39,7 @@
     >
       <div
         v-show="isOpen"
-        class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg pt-1 bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100"
+        class="origin-top-right absolute z-10 right-0 mt-2 w-56 rounded-md shadow-lg pt-1 bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100"
         role="menu"
         aria-orientation="vertical"
         aria-labelledby="user-menu"
