@@ -220,9 +220,22 @@ export default {
         .toUpperCase();
     },
     findEntry(fileArray, searchString) {
-      return fileArray.filter((file) =>
-        file.name.toLowerCase().includes(searchString.toLowerCase())
-      );
+      let arr = [];
+      const words = searchString.split(/\s+/).filter((word) => word !== "");
+      // return if there is no search string
+      if (words.length == 0) return fileArray;
+
+      for (var i = 0; i < words.length; ++i) {
+        arr.push(
+          ...fileArray.filter(
+            (file) =>
+              file.name.toLowerCase().includes(words[i].toLowerCase()) &&
+              // only push file once
+              arr.indexOf(file) == -1
+          )
+        );
+      }
+      return arr;
     },
   },
 };
