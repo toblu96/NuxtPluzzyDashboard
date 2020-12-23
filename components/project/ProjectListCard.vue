@@ -119,12 +119,22 @@
           getSearchString != '' &&
           findEntry(files, getSearchString)[0] == undefined
         "
-        class="flex flex-col p-4"
+        class="flex flex-col p-8 items-center"
       >
-        <div class="text-lg">
-          Can't find any files with the name containing "{{ getSearchString }}"
+        <img
+          class="w-full sm:w-1/2"
+          src="~/assets/images/search-result-not-found.png"
+        />
+        <div
+          class="flex flex-col sm:flex-row sm:space-x-3 space-y-3 sm:space-y-0 text-sm"
+        >
+          <p class="flex-auto">Can't find any files with the name containing</p>
+          <span
+            class="flex-auto text-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-gray-100 text-gray-800"
+          >
+            {{ getSearchString }}
+          </span>
         </div>
-        <img src="~/assets/images/search-result-not-found.png" />
       </div>
     </ul>
     <!-- Profile Skeleton Loader -->
