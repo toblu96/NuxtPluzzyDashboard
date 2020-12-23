@@ -45,6 +45,7 @@
 
 <script>
 export default {
+  layout: "application",
   auth: false,
 };
 </script>

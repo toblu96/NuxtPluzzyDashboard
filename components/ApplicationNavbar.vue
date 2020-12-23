@@ -15,7 +15,10 @@
         </div>
 
         <!-- Search section -->
-        <div class="flex-1 flex justify-center lg:justify-end">
+        <div
+          v-show="$auth.loggedIn"
+          class="flex flex-1 justify-center lg:justify-end"
+        >
           <div class="w-full px-2 lg:px-6">
             <label for="search" class="sr-only">Search files</label>
             <div class="relative text-pink-200 focus-within:text-pink-400">
@@ -120,7 +123,15 @@
               >
             </div>
             <!-- Profile dropdown -->
-            <user-menu />
+            <user-menu v-if="$auth.loggedIn" />
+            <div v-else>
+              <button
+                @click="$auth.loginWith('github')"
+                class="bg-pink-100 border border-transparent rounded-md shadow py-2 px-6 ml-2 inline-flex items-center text-sm font-medium text-orange-600 hover:text-orange-500"
+              >
+                Sign in
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -145,8 +156,8 @@
           >Support</a
         >
       </div>
-      <div class="pt-4 pb-3 border-t border-pink-600">
-        <div class="px-2">
+      <div class="py-4 border-t border-pink-600">
+        <div v-if="$auth.loggedIn" class="px-2">
           <a
             href="#"
             class="block px-3 py-2 rounded-md text-base font-medium text-pink-200 hover:text-pink-100 hover:bg-pink-600"
@@ -158,10 +169,21 @@
             >Settings</a
           >
           <button
-            @click="$auth.logout()"
+            @click="
+              $auth.logout();
+              this.isOpen = false;
+            "
             class="mt-1 block px-3 py-2 w-full rounded-md text-base text-left font-medium text-pink-200 hover:text-pink-100 hover:bg-pink-600"
           >
             Sign out
+          </button>
+        </div>
+        <div v-else class="px-2">
+          <button
+            @click="$auth.login('github')"
+            class="block px-3 py-2 w-full rounded-md text-base text-left font-medium text-pink-200 hover:text-pink-100 hover:bg-pink-600"
+          >
+            Sign in
           </button>
         </div>
       </div>
