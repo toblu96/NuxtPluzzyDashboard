@@ -48,7 +48,10 @@
                 type="search"
                 v-model="searchString"
                 ref="searchInput"
-                @keydown.esc="$refs.searchInput.blur()"
+                @keydown.esc="
+                  $refs.searchInput.blur();
+                  updateSearchString('');
+                "
               />
             </div>
           </div>
