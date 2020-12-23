@@ -38,6 +38,7 @@
       leave-to-class="opacity-0 scale-95"
     >
       <div
+        @click="isOpen = false"
         v-show="isOpen"
         class="origin-top-right absolute z-10 right-0 mt-2 w-56 rounded-md shadow-lg pt-1 bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100"
         role="menu"
@@ -63,6 +64,12 @@
           >
             Settings
           </a>
+          <NuxtLink
+            to="/project"
+            class="flex justify-between w-full px-4 py-2 text-sm leading-5 text-left hover:bg-gray-100"
+          >
+            Project
+          </NuxtLink>
         </div>
         <div class="py-1">
           <button

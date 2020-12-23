@@ -4,7 +4,7 @@
     <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
       <div class="relative flex items-center justify-between h-16">
         <!-- Logo section -->
-        <div class="flex items-center px-2 lg:px-0 xl:w-64">
+        <NuxtLink to="/" class="flex items-center px-2 lg:px-0 xl:w-64">
           <div class="flex-shrink-0">
             <img
               class="h-8 w-auto"
@@ -12,7 +12,7 @@
               alt="Workflow"
             />
           </div>
-        </div>
+        </NuxtLink>
 
         <!-- Search section -->
         <div
@@ -143,7 +143,7 @@
 
       Menu open: "block", Menu closed: "hidden"
     -->
-    <div v-show="isOpen" class="block lg:hidden">
+    <div @click="isOpen = false" v-show="isOpen" class="block lg:hidden">
       <div class="px-2 pt-2 pb-3">
         <a
           href="#"
@@ -168,6 +168,11 @@
             class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-pink-200 hover:text-pink-100 hover:bg-pink-600"
             >Settings</a
           >
+          <NuxtLink
+            to="/project"
+            class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-pink-200 hover:text-pink-100 hover:bg-pink-600"
+            >Project
+          </NuxtLink>
           <button
             @click="
               $auth.logout();
