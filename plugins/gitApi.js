@@ -23,6 +23,7 @@ export default function (context, inject) {
         getUserAvatar,
         pushFileToRepo,
         updateFileInRepo,
+        deleteFileInRepo,
     })
 
     async function getProjecs() {
@@ -132,9 +133,33 @@ export default function (context, inject) {
         }
     }
 
+    async function deleteFileInRepo(filePath, commitMessage = 'Delete file(s)') {
+        try {
+            const path = filePath.replace(/\//g, '%2F').replace(/\./g, '%2E')
+
+            return unWrap(await fetch(`${baseUrl}/api/${apiVersion}/projects/${projectPath}/repository/files/${path}`, {
+                headers,
+                method: 'DELETE',
+                body: JSON.stringify({
+                    branch: "master",
+                    author_email: context.store.$auth.user.email,
+                    author_name: context.store.$auth.user.name,
+                    commit_message: commitMessage
+                })
+            }))
+        } catch (error) {
+            return getErrorResponse(error)
+        }
+    }
+
 
     async function unWrap(response) {
-        const json = await response.json()
+        let json = ''
+        try {
+            json = await response.json()
+        } catch (error) {
+            json = 'No Content from response'
+        }
         const { ok, status, statusText } = response
         return {
             json,
