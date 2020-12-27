@@ -8,6 +8,11 @@
         v-for="file in findEntry(files, getSearchString)"
         :key="file.path"
         class="relative pl-4 pr-6 py-5 hover:bg-gray-50 sm:py-6 sm:pl-6 lg:pl-8 xl:pl-6"
+        :class="
+          isDeletingPath == file.path
+            ? 'animate-pulse bg-gradient-to-r from-orange-100 to-pink-100'
+            : ''
+        "
       >
         <div class="flex items-center justify-between space-x-4">
           <!-- Repo name and link -->
@@ -157,6 +162,7 @@ export default {
   data: function () {
     return {
       files: [],
+      isDeletingPath: "",
     };
   },
   async mounted() {
@@ -170,6 +176,7 @@ export default {
       this.files = await this.getRichProjectFileData();
     },
     async deleteFile(filePath) {
+      this.isDeletingPath = filePath;
       // delete Project File
       const responses = await Promise.all([
         this.$gitApi.deleteFileInRepo(filePath),
@@ -183,6 +190,7 @@ export default {
       }
 
       await this.reloadFiles();
+      this.isDeletingPath = "";
     },
     async getRichProjectFileData() {
       // get Project Files
