@@ -51,7 +51,7 @@
           >
             <!-- Header -->
             <div class="px-4 py-5 sm:px-6">
-              <h1 class="font-medium">Upload Graphic to GitLab</h1>
+              <h1 class="font-medium">Upload Config to GitLab</h1>
             </div>
             <!-- Main content -->
             <div class="px-4 py-5 sm:p-6">
@@ -87,7 +87,7 @@
                         </svg>
                         <span
                           class="text-sm text-gray-500 group-hover:text-gray-900 font-medium"
-                          >remove files</span
+                          >remove file</span
                         >
                       </button>
                     </div>
@@ -113,23 +113,23 @@
                     </svg>
                     <div class="flex text-sm text-gray-600 justify-center">
                       <label
-                        for="file-upload"
+                        for="file-upload-excel"
                         class="relative cursor-pointer bg-white rounded-md font-medium text-pink-600 hover:text-pink-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-pink-500"
                       >
                         <span>Upload a file</span>
+
                         <input
-                          multiple
-                          id="file-upload"
+                          id="file-upload-excel"
                           ref="fileupload"
-                          name="file-upload"
+                          name="file-upload-excel"
                           type="file"
                           class="sr-only"
-                          accept="image/svg+xml"
+                          accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                         />
                       </label>
                     </div>
                     <p class="text-xs text-gray-500">
-                      SVG (max. file size 10GB)
+                      .xslx (max. file size 10GB)
                     </p>
                   </div>
                 </div>
@@ -169,7 +169,7 @@
                 "
                 class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-base font-medium text-white bg-gradient-to-r from-orange-500 to-pink-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50"
               >
-                Upload Graphic
+                Upload File
               </button>
               <button
                 @click="hide"
@@ -187,6 +187,8 @@
 </template>
 
 <script>
+import XLSX from "xlsx";
+
 export default {
   data: function () {
     return {
@@ -226,17 +228,54 @@ export default {
       if (this.commitMessage == "") {
         this.commitMessage = this.defaultCommitMessage;
       }
-      for (var i = 0; i < this.files.length; i++) {
+
+      // read new file data
+      let newFiles = await this.decodeXSLXFile(this.files[0]);
+
+      // read old files
+      const responses = await Promise.all([
+        this.$gitApi.getProjectTree("deploy/config"),
+      ]);
+      const badResponse = responses.find((response) => !response.ok);
+      if (badResponse) {
+        $nuxt.error({
+          statusCode: badResponse.status,
+          message: badResponse.statusText,
+        });
+      }
+      const existingFiles = responses[0].json;
+
+      // delete old files
+      const diff = this.checkDiff(existingFiles, newFiles);
+
+      for (var i = 0; i < diff.length; i++) {
+        if (diff[i].name == ".gitkeep") continue;
+
+        const response = await this.$gitApi.deleteFileInRepo(
+          "deploy/config/" + diff[i].name,
+          this.commitMessage
+        );
+
+        if (!response.ok) {
+          $nuxt.error({
+            statusCode: response.status,
+            message: response.statusText,
+          });
+        }
+      }
+
+      // write files to Git
+      for (var i = 0; i < newFiles.length; i++) {
         const response = await this.$gitApi.pushFileToRepo(
-          this.files[i],
+          newFiles[i],
           this.commitMessage,
-          "graphics/"
+          "deploy/config/"
         );
 
         if (!response.ok) {
           if (response.json.message == "A file with this name already exists") {
             // check if error occours because file does exist already
-            await this.updateFile(this.files[i]);
+            await this.updateFile(newFiles[i]);
           } else {
             $nuxt.error({
               statusCode: response.status,
@@ -253,10 +292,11 @@ export default {
       if (this.commitMessage == "") {
         this.commitMessage = this.defaultCommitMessage;
       }
+
       const response = await this.$gitApi.updateFileInRepo(
         file,
         this.commitMessage,
-        "graphics/"
+        "deploy/config/"
       );
 
       if (!response.ok)
@@ -265,6 +305,52 @@ export default {
           message: response.statusText,
         });
     },
+
+    async decodeXSLXFile(file) {
+      try {
+        var content = await this.$gitApi.readFileAsync(file);
+        var workbook = XLSX.read(content, { type: "binary" });
+
+        let Sheets = [];
+        for (
+          let sheetIndex = 0;
+          sheetIndex < workbook.SheetNames.length;
+          sheetIndex++
+        ) {
+          var sheetName = workbook.SheetNames[sheetIndex];
+          var nodes = {
+            nodes: XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {
+              raw: true,
+              blankrows: true,
+            }),
+          };
+          Sheets[sheetIndex] = {
+            name: sheetName,
+            ...nodes,
+          };
+        }
+        return Sheets;
+      } catch (error) {
+        return error;
+      }
+    },
+
+    checkDiff(existingFiles, newFiles) {
+      return existingFiles.filter((existingFile) => {
+        let exists = false;
+        for (let index = 0; index < newFiles.length; index++) {
+          if (
+            newFiles[index].name.replace(".json", "") ==
+            existingFile.name.replace(".json", "")
+          ) {
+            exists = true;
+            break;
+          }
+        }
+        return !exists;
+      });
+    },
+
     async waitFor(ms) {
       return new Promise(function (resolve) {
         setTimeout(resolve, ms || 0);

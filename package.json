@@ -15,7 +15,8 @@
     "@nuxtjs/pwa": "^3.0.2",
     "@tailwindcss/forms": "^0.2.1",
     "core-js": "^3.6.5",
-    "nuxt": "^2.14.12"
+    "nuxt": "^2.14.12",
+    "xlsx": "^0.16.9"
   },
   "devDependencies": {
     "@nuxtjs/moment": "^1.6.1",

@@ -2,7 +2,10 @@
   <div>
     <layout-three-col>
       <template slot="sidebar">
-        <project-sidebar @showGraphicsModal="$refs.showGraphicsModal.show()" />
+        <project-sidebar
+          @showGraphicsModal="$refs.showGraphicsModal.show()"
+          @showConfigModal="$refs.showConfigModal.show()"
+        />
       </template>
       <template slot="main">
         <projects-list />
@@ -12,6 +15,7 @@
       </template>
     </layout-three-col>
     <modal-upload-graphics ref="showGraphicsModal" />
+    <modal-upload-config ref="showConfigModal" />
   </div>
 </template>
 

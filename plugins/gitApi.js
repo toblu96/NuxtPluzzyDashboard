@@ -8,6 +8,9 @@ export default function (context, inject) {
         'Access-Control-Allow-Origin': '*',
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        // 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryBkw0n9WIXAw1z56j',
+        // https://wiki.selfhtml.org/wiki/MIME-Type/%C3%9Cbersicht
+        // 'Content-Type': 'application/vnd.openxmlformats-officedocument. spreadsheetml.sheet',
     }
 
     const filePath = 'deploy/telegraf/OPC_UA'
@@ -24,6 +27,7 @@ export default function (context, inject) {
         pushFileToRepo,
         updateFileInRepo,
         deleteFileInRepo,
+        readFileAsync,
     })
 
     async function getProjecs() {
@@ -83,14 +87,22 @@ export default function (context, inject) {
         }
     }
 
-    async function pushFileToRepo(file, commitMessage = 'Upload new file(s)') {
-        const filePath = 'graphics/'
+    async function pushFileToRepo(file, commitMessage = 'Upload new file(s)', filePath = '') {
         try {
-            const filename = file.name
-            filename.replace(/\s/g, '%20').replace(/\./g, '%2E')
-            const path = filePath.replace(/\//g, '%2F').replace(/\./g, '%2E')
+            let contentBuffer = ''
+            let filename = ''
 
-            let contentBuffer = await readFileAsync(file);
+            // check if input is a file or raw data
+            if (file instanceof File) {
+                contentBuffer = await readFileAsync(file);
+                filename = encodeURIComponent(file.name)
+            } else {
+                contentBuffer = JSON.stringify(file)
+                filename = encodeURIComponent(file.name + '.json')
+            }
+
+            const path = encodeURIComponent(filePath)
+
 
             return unWrap(await fetch(`${baseUrl}/api/${apiVersion}/projects/${projectPath}/repository/files/${path}${filename}`, {
                 headers,
@@ -108,14 +120,21 @@ export default function (context, inject) {
         }
     }
 
-    async function updateFileInRepo(file, commitMessage = 'Upload new file(s)') {
-        const filePath = 'graphics/'
+    async function updateFileInRepo(file, commitMessage = 'Upload new file(s)', filePath = '') {
         try {
-            const filename = file.name
-            filename.replace(/\s/g, '%20').replace(/\./g, '%2E')
-            const path = filePath.replace(/\//g, '%2F').replace(/\./g, '%2E')
+            let contentBuffer = ''
+            let filename = ''
 
-            let contentBuffer = await readFileAsync(file);
+            // check if input is a file or raw data
+            if (file instanceof File) {
+                contentBuffer = await readFileAsync(file);
+                filename = encodeURIComponent(file.name)
+            } else {
+                contentBuffer = JSON.stringify(file)
+                filename = encodeURIComponent(file.name + '.json')
+            }
+
+            const path = encodeURIComponent(filePath)
 
             return unWrap(await fetch(`${baseUrl}/api/${apiVersion}/projects/${projectPath}/repository/files/${path}${filename}`, {
                 headers,
@@ -135,7 +154,7 @@ export default function (context, inject) {
 
     async function deleteFileInRepo(filePath, commitMessage = 'Delete file(s)') {
         try {
-            const path = filePath.replace(/\//g, '%2F').replace(/\./g, '%2E')
+            const path = encodeURIComponent(filePath)
 
             return unWrap(await fetch(`${baseUrl}/api/${apiVersion}/projects/${projectPath}/repository/files/${path}`, {
                 headers,
@@ -212,6 +231,8 @@ export default function (context, inject) {
 
             if (file.type == 'image/svg+xml') {
                 reader.readAsText(file);
+            } else if (file.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+                reader.readAsBinaryString(file);
             } else {
                 reader.readAsArrayBuffer(file);
             }
