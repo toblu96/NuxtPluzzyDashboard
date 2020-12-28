@@ -41,7 +41,8 @@ export default {
   ],
   env: {
     GITLAB_BASEURL: process.env.GITLAB_BASEURL,
-    GITLAB_PROJECT_PATH: process.env.GITLAB_PROJECT_PATH
+    GITLAB_PROJECT_PATH: process.env.GITLAB_PROJECT_PATH,
+    NODERED_BASEURL: process.env.NODERED_BASEURL,
   },
   router: {
     middleware: ['auth'],
@@ -69,7 +70,8 @@ export default {
       },
     },
     plugins: [
-      '~/plugins/gitApi.js'
+      '~/plugins/gitApi.js',
+      '~/plugins/auth.js',
     ]
   },
 
