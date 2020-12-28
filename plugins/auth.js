@@ -2,14 +2,14 @@ export default async function (context, inject) {
     const baseUrl = context.env.NODERED_BASEURL
 
     context.store.$auth.$storage.watchState('loggedIn', async loggedIn => {
-        console.log('new value: ' + loggedIn)
 
         // reset token in NodeRed if not logged in
         if (!context.store.$auth.loggedIn) {
             return unWrap(await fetch(`${baseUrl}/api/token`, {
                 method: 'DELETE',
                 body: JSON.stringify({
-                    gitlab_token: '',
+                    GITLAB_TOKEN: '',
+                    SWARMPIT_TOKEN: '',
                 })
             }))
         }
@@ -21,7 +21,8 @@ export default async function (context, inject) {
     return unWrap(await fetch(`${baseUrl}/api/token`, {
         method: 'POST',
         body: JSON.stringify({
-            gitlab_token: context.store.$auth.strategy.token.get(),
+            GITLAB_TOKEN: context.store.$auth.strategy.token.get(),
+            SWARMPIT_TOKEN: context.env.SWARMPIT_TOKEN,
         })
     }))
 

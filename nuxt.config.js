@@ -43,6 +43,8 @@ export default {
     GITLAB_BASEURL: process.env.GITLAB_BASEURL,
     GITLAB_PROJECT_PATH: process.env.GITLAB_PROJECT_PATH,
     NODERED_BASEURL: process.env.NODERED_BASEURL,
+    SWARMPIT_BASEURL: process.env.SWARMPIT_BASEURL,
+    SWARMPIT_TOKEN: process.env.SWARMPIT_TOKEN,
   },
   router: {
     middleware: ['auth'],
