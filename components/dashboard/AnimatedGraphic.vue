@@ -27,6 +27,8 @@ export default {
   data: function () {
     return {
       imageContent: "",
+      svgTemplate: "",
+      templateKeys: [],
       isLoaded: false,
       isCompiled: false,
     };
@@ -34,10 +36,14 @@ export default {
   watch: {
     imagePath: async function (newVal, oldVal) {
       await this.reloadImage(this.imagePath);
+      await this.reloadValues();
+      this.resetImageSize();
     },
   },
   async mounted() {
     await this.reloadImage(this.imagePath);
+    await this.reloadValues();
+    this.resetImageSize();
   },
   methods: {
     async reloadImage(path) {
@@ -46,9 +52,21 @@ export default {
       this.isCompiled = false;
       this.imageContent = "";
 
-      const rawImage = await this.getGitImage(path);
+      var rawImage = await this.getGitImage(path);
       this.isLoaded = true;
-      this.imageContent = await this.formatImage(rawImage);
+      rawImage = await this.formatImage(rawImage);
+      this.templateKeys = await this.$imageTemplate.getTemplateKeys(rawImage);
+      this.svgTemplate = this.$imageTemplate.compileTemplate(rawImage);
+    },
+    async reloadValues() {
+      // load timedb data
+      const timedbData = await this.reloadDBData(this.templateKeys);
+      // fill timedb data
+      await this.$imageTemplate.initHelpers();
+      this.imageContent = this.$imageTemplate.fillData(
+        this.svgTemplate,
+        timedbData
+      );
       this.isCompiled = true;
     },
     async getGitImage(filePath) {
@@ -103,13 +121,29 @@ export default {
         }
       }
 
+      return rootElement.innerHTML;
+    },
+
+    resetImageSize() {
+      let rootElement = document.getElementById("svgImage");
       // let image grow to original scale
       d3.select(rootElement)
         .select("svg")
         .attr("width", "100%")
         .attr("height", null);
+    },
 
-      return rootElement.innerHTML;
+    async reloadDBData(dataKeys) {
+      let localData = {};
+      for (let dbVal = 0; dbVal < dataKeys.length; dbVal++) {
+        try {
+          let result = await this.$timedb.getLastEntry(dataKeys[dbVal]);
+          localData[dataKeys[dbVal]] = result;
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      return localData;
     },
 
     async waitFor(ms) {
