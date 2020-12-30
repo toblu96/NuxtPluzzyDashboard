@@ -48,7 +48,7 @@ export default function (context, inject) {
 
     async function getProjectFile(filePath) {
         try {
-            const path = filePath.replace(/\//g, '%2F').replace(/\./g, '%2E')
+            const path = encodeURIComponent(filePath)
             return unWrap(await fetch(`${baseUrl}/api/${apiVersion}/projects/${projectPath}/repository/files/${path}?ref=master`, { headers }))
         } catch (error) {
             return getErrorResponse(error)

@@ -49,7 +49,10 @@
     <div
       class="flex flex-col justify-center mt-3 px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md"
     >
-      hello {{ activeImageIndex }}
+      <animated-graphic
+        v-if="images[0] != undefined"
+        :imagePath="images[activeImageIndex].path"
+      />
     </div>
   </div>
 </template>
@@ -81,8 +84,6 @@ export default {
         });
       }
       this.images = responses[0].json;
-
-      console.log(this.images);
     },
   },
 };
