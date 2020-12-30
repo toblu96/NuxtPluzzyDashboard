@@ -45,6 +45,9 @@ export default {
     NODERED_BASEURL: process.env.NODERED_BASEURL,
     SWARMPIT_BASEURL: process.env.SWARMPIT_BASEURL,
     SWARMPIT_TOKEN: process.env.SWARMPIT_TOKEN,
+    INFLUXDB_BASEURL: process.env.INFLUXDB_BASEURL,
+    INFLUXDB_TOKEN: process.env.INFLUXDB_TOKEN,
+    INFLUXDB_ORGNAME: process.env.INFLUXDB_ORGNAME,
   },
   router: {
     middleware: ['auth'],
