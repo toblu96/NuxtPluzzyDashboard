@@ -2,6 +2,7 @@
   <div class="relative w-full min-h-56">
     <!-- Image content -->
     <div v-show="isLoaded" id="svgImage" class="w-full" v-html="imageContent" />
+    {{ errorMessage }}
 
     <!-- Skeleton loader -->
     <div v-show="!isCompiled" class="absolute top-0 w-full bg-gray-50">
@@ -31,6 +32,7 @@ export default {
       templateKeys: [],
       isLoaded: false,
       isCompiled: false,
+      errorMessage: "",
     };
   },
   watch: {
@@ -59,14 +61,19 @@ export default {
       this.svgTemplate = this.$imageTemplate.compileTemplate(rawImage);
     },
     async reloadValues() {
-      // load timedb data
-      const timedbData = await this.reloadDBData(this.templateKeys);
-      // fill timedb data
-      await this.$imageTemplate.initHelpers();
-      this.imageContent = this.$imageTemplate.fillData(
-        this.svgTemplate,
-        timedbData
-      );
+      this.errorMessage = "";
+      try {
+        // load timedb data
+        const timedbData = await this.reloadDBData(this.templateKeys);
+        // fill timedb data
+        await this.$imageTemplate.initHelpers();
+        this.imageContent = this.$imageTemplate.fillData(
+          this.svgTemplate,
+          timedbData
+        );
+      } catch (error) {
+        this.errorMessage = error;
+      }
       this.isCompiled = true;
     },
     async getGitImage(filePath) {
