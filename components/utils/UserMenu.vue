@@ -1,5 +1,9 @@
 <template>
-  <div class="ml-4 relative flex-shrink-0">
+  <div
+    class="ml-4 relative flex-shrink-0"
+    v-click-away="'close'"
+    @keydown.esc="close"
+  >
     <div>
       <button
         class="bg-pink-700 flex text-sm rounded-full text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-pink-700 focus:ring-white"
@@ -38,7 +42,6 @@
       leave-to-class="opacity-0 scale-95"
     >
       <div
-        @click="isOpen = false"
         v-show="isOpen"
         class="origin-top-right absolute z-10 right-0 mt-2 w-56 rounded-md shadow-lg pt-1 bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100"
         role="menu"
@@ -91,7 +94,12 @@
 </template>
 
 <script>
+import ClickAway from "~/directives/click-away";
+
 export default {
+  directives: {
+    "click-away": ClickAway,
+  },
   data: function () {
     return {
       isOpen: false,
@@ -100,6 +108,11 @@ export default {
   },
   mounted() {
     this.avatarUrl = this.$auth.user.avatar_url;
+  },
+  methods: {
+    close() {
+      this.isOpen = false;
+    },
   },
 };
 </script>
