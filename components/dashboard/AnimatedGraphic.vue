@@ -1,5 +1,8 @@
 <template>
-  <div class="relative w-full min-h-56">
+  <div
+    class="w-full min-h-20 sm:min-h-56"
+    :class="!isCompiled ? 'relative' : ''"
+  >
     <!-- Image content -->
     <div v-show="isLoaded" id="svgImage" class="w-full" v-html="imageContent" />
     {{ errorMessage }}
@@ -8,7 +11,7 @@
     <div v-show="!isCompiled" class="absolute top-0 w-full bg-gray-50">
       <div class="top-0 w-48 mx-auto inset-x-0">
         <img
-          class="h-56 animate-pulse"
+          class="h-20 sm:h-56 animate-pulse"
           src="~/assets/images/image-skeleton.svg"
           alt=""
         />
@@ -39,13 +42,21 @@ export default {
     imagePath: async function (newVal, oldVal) {
       await this.reloadImage(this.imagePath);
       await this.reloadValues();
-      this.resetImageSize();
+      // this.resetImageSize();
     },
   },
   async mounted() {
     await this.reloadImage(this.imagePath);
     await this.reloadValues();
-    this.resetImageSize();
+  },
+  created() {
+    this.$nuxt.$on("refresh-dropdown-trigger-event", () => {
+      console.log("reloadValues from graphics component");
+      this.reloadValues();
+    });
+  },
+  beforeDestroy() {
+    this.$nuxt.$off("refresh-dropdown-trigger-event");
   },
   methods: {
     async reloadImage(path) {
@@ -71,6 +82,8 @@ export default {
           this.svgTemplate,
           timedbData
         );
+        await this.waitFor(10);
+        this.resetImageSize();
       } catch (error) {
         this.errorMessage = error;
       }
@@ -134,10 +147,7 @@ export default {
     resetImageSize() {
       let rootElement = document.getElementById("svgImage");
       // let image grow to original scale
-      d3.select(rootElement)
-        .select("svg")
-        .attr("width", "100%")
-        .attr("height", null);
+      d3.select(rootElement).select("svg").attr("height", null);
     },
 
     async reloadDBData(dataKeys) {

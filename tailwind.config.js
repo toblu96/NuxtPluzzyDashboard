@@ -16,6 +16,7 @@ module.exports = {
         orange: colors.orange,
       },
       minHeight: {
+        '20': '5rem',
         '56': '14rem',
       }
     },

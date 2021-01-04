@@ -5,7 +5,7 @@
       <h3 class="text-lg leading-6 font-medium text-gray-900">
         Animated Graphics
       </h3>
-      <div class="mt-3 sm:mt-4">
+      <div class="flex w-full mt-3 sm:mt-4">
         <!-- Dropdown menu on small screens -->
         <div class="sm:hidden">
           <label for="selected-tab" class="sr-only">Select a tab</label>
@@ -25,7 +25,7 @@
           </select>
         </div>
         <!-- Tabs at small breakpoint and up -->
-        <div class="hidden sm:block">
+        <div class="hidden sm:block flex-grow w-96">
           <nav class="-mb-px flex space-x-8 overflow-x-auto">
             <button
               v-for="(image, idx) in images"
@@ -42,12 +42,16 @@
             </button>
           </nav>
         </div>
+        <refresh-dropdown
+          class="flex-shrink-0 w-32"
+          :refreshCycles="[0, 5, 10, 15, 30]"
+        />
       </div>
     </div>
 
     <!-- File content -->
     <div
-      class="flex flex-col justify-center mt-3 px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md"
+      class="flex flex-col justify-center mt-3 p-1 sm:p-6 border-2 border-gray-300 border-dashed rounded-md"
     >
       <animated-graphic
         v-if="images[0] != undefined"
