@@ -13,6 +13,7 @@
         leave-to-class="opacity-0"
       >
         <div
+          @click="hide"
           v-show="startAnimation"
           class="fixed inset-0 transition-opacity"
           aria-hidden="true"
