@@ -55,18 +55,6 @@
           </p>
         </div>
         <div class="py-1">
-          <a
-            href="#account-settings"
-            class="flex justify-between w-full px-4 py-2 text-sm leading-5 text-left hover:bg-gray-100"
-          >
-            Your Profile
-          </a>
-          <a
-            href="#support"
-            class="flex justify-between w-full px-4 py-2 text-sm leading-5 text-left hover:bg-gray-100"
-          >
-            Settings
-          </a>
           <NuxtLink
             to="/"
             class="flex justify-between w-full px-4 py-2 text-sm leading-5 text-left hover:bg-gray-100"
@@ -78,6 +66,12 @@
             class="flex justify-between w-full px-4 py-2 text-sm leading-5 text-left hover:bg-gray-100"
           >
             Project
+          </NuxtLink>
+          <NuxtLink
+            to="/settings"
+            class="flex justify-between w-full px-4 py-2 text-sm leading-5 text-left hover:bg-gray-100"
+          >
+            Settings
           </NuxtLink>
         </div>
         <div class="py-1">

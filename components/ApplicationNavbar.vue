@@ -161,16 +161,6 @@
       </div>
       <div class="py-4 border-t border-pink-600">
         <div v-if="$auth.loggedIn" class="px-2">
-          <a
-            href="#"
-            class="block px-3 py-2 rounded-md text-base font-medium text-pink-200 hover:text-pink-100 hover:bg-pink-600"
-            >Your Profile</a
-          >
-          <a
-            href="#"
-            class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-pink-200 hover:text-pink-100 hover:bg-pink-600"
-            >Settings</a
-          >
           <NuxtLink
             to="/"
             class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-pink-200 hover:text-pink-100 hover:bg-pink-600"
@@ -181,12 +171,17 @@
             class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-pink-200 hover:text-pink-100 hover:bg-pink-600"
             >Project
           </NuxtLink>
+          <NuxtLink
+            to="/settings"
+            class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-pink-200 hover:text-pink-100 hover:bg-pink-600"
+            >Settings
+          </NuxtLink>
           <button
             @click="
               $auth.logout();
-              this.isOpen = false;
+              isOpen = false;
             "
-            class="mt-1 block px-3 py-2 w-full rounded-md text-base text-left font-medium text-pink-200 hover:text-pink-100 hover:bg-pink-600"
+            class="mt-1 block px-3 py-2 w-full rounded-md text-base text-left font-medium text-pink-200"
           >
             Sign out
           </button>
