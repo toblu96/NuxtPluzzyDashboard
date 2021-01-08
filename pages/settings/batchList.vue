@@ -1,164 +1,135 @@
 <template>
   <div class="space-y-6">
-    <!-- Payment details -->
-    <section aria-labelledby="payment_details_heading">
-      <div>
-        <div class="shadow sm:rounded-md sm:overflow-hidden">
-          <div class="bg-white py-6 px-4 sm:p-6">
-            <div>
-              <h2
-                id="payment_details_heading"
-                class="text-lg leading-6 font-medium text-gray-900"
+    <!-- Current Batch -->
+    <section aria-labelledby="applicant-information-title">
+      <div class="bg-white shadow sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+          <h2
+            id="payment_details_heading"
+            class="text-lg leading-6 font-medium text-gray-900"
+          >
+            Current Batch
+          </h2>
+          <p class="mt-1 text-sm text-gray-500">
+            This shows your current running batch. If no batch is running you
+            can start a new one here.
+          </p>
+        </div>
+        <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+          <div v-if="isLoaded">
+            <!-- create new batch -->
+            <div
+              class="flex w-full justify-center"
+              v-if="runningBatch.BatchName == undefined"
+            >
+              <div
+                class="inline-block align-bottom bg-gray-50 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="modal-headline"
               >
-                Current Batch
-              </h2>
-              <p class="mt-1 text-sm text-gray-500">
-                This shows your current running batch. If no batch is running
-                you can start a new one here.
-              </p>
-            </div>
-
-            <div class="mt-6 grid grid-cols-4 gap-6">
-              <div class="col-span-4 sm:col-span-2">
-                <label
-                  for="first_name"
-                  class="block text-sm font-medium text-gray-700"
-                  >First name</label
-                >
-                <input
-                  type="text"
-                  name="first_name"
-                  id="first_name"
-                  autocomplete="cc-given-name"
-                  class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-gray-900 focus:border-gray-900 sm:text-sm"
-                />
-              </div>
-
-              <div class="col-span-4 sm:col-span-2">
-                <label
-                  for="last_name"
-                  class="block text-sm font-medium text-gray-700"
-                  >Last name</label
-                >
-                <input
-                  type="text"
-                  name="last_name"
-                  id="last_name"
-                  autocomplete="cc-family-name"
-                  class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-gray-900 focus:border-gray-900 sm:text-sm"
-                />
-              </div>
-
-              <div class="col-span-4 sm:col-span-2">
-                <label
-                  for="email_address"
-                  class="block text-sm font-medium text-gray-700"
-                  >Email address</label
-                >
-                <input
-                  type="text"
-                  name="email_address"
-                  id="email_address"
-                  autocomplete="email"
-                  class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-gray-900 focus:border-gray-900 sm:text-sm"
-                />
-              </div>
-
-              <div class="col-span-4 sm:col-span-1">
-                <label
-                  for="expiration_date"
-                  class="block text-sm font-medium text-gray-700"
-                  >Expration date</label
-                >
-                <input
-                  type="text"
-                  name="expiration_date"
-                  id="expiration_date"
-                  autocomplete="cc-exp"
-                  class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-gray-900 focus:border-gray-900 sm:text-sm"
-                  placeholder="MM / YY"
-                />
-              </div>
-
-              <div class="col-span-4 sm:col-span-1">
-                <label
-                  for="security_code"
-                  class="flex items-center text-sm font-medium text-gray-700"
-                >
-                  <span>Security code</span>
-                  <!-- Heroicon name: question-mark-circle -->
-                  <svg
-                    class="ml-1 flex-shrink-0 h-5 w-5 text-gray-300"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    aria-hidden="true"
+                <div>
+                  <div class="mt-3 text-center sm:mt-5">
+                    <h3
+                      class="text-lg leading-6 font-medium text-gray-900"
+                      id="modal-headline"
+                    >
+                      Currently no Batch running
+                    </h3>
+                    <div class="mt-2">
+                      <p class="text-sm text-gray-500">
+                        Enter a batch name and create the new batch.
+                      </p>
+                    </div>
+                    <div class="mt-8">
+                      <label
+                        for="batchname"
+                        class="block text-sm text-left font-medium text-gray-700"
+                        >Batch Name</label
+                      >
+                      <div class="mt-1">
+                        <input
+                          v-model="newBatchName"
+                          type="text"
+                          id="batchname"
+                          class="shadow-sm focus:ring-pink-500 focus:border-pink-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                          placeholder="Batch 01"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-5 sm:mt-6">
+                  <button
+                    @click="startNewBatch(newBatchName)"
+                    type="button"
+                    class="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 text-base font-medium text-white bg-gradient-to-r from-orange-500 to-pink-500 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 sm:text-sm"
                   >
-                    <path
-                      fill-rule="evenodd"
-                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </label>
-                <input
-                  type="text"
-                  name="security_code"
-                  id="security_code"
-                  autocomplete="cc-csc"
-                  class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-gray-900 focus:border-gray-900 sm:text-sm"
-                />
+                    Create Batch
+                  </button>
+                </div>
               </div>
-
-              <div class="col-span-4 sm:col-span-2">
-                <label
-                  for="country"
-                  class="block text-sm font-medium text-gray-700"
-                  >Country / Region</label
-                >
-                <select
-                  id="country"
-                  name="country"
-                  autocomplete="country"
-                  class="mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-gray-900 focus:border-gray-900 sm:text-sm"
-                >
-                  <option>United States</option>
-                  <option>Canada</option>
-                  <option>Mexico</option>
-                </select>
-              </div>
-
-              <div class="col-span-4 sm:col-span-2">
-                <label
-                  for="postal_code"
-                  class="block text-sm font-medium text-gray-700"
-                  >ZIP / Postal</label
-                >
-                <input
-                  type="text"
-                  name="postal_code"
-                  id="postal_code"
-                  autocomplete="postal-code"
-                  class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-gray-900 focus:border-gray-900 sm:text-sm"
-                />
+            </div>
+            <!-- current batch information -->
+            <div
+              v-else
+              class="space-y-4 bg-gray-100 rounded-md px-4 py-5 sm:px-6"
+            >
+              <h3 class="text-lg leading-6 font-medium text-gray-900">
+                {{ runningBatch.BatchName }}
+              </h3>
+              <!-- <p class="mt-1 text-sm text-gray-500">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit quam
+                  corrupti consectetur.
+                </p> -->
+              <div
+                class="flex flex-col sm:flex-row space-y-8 sm:space-y-0 justify-between flex-wrap sm:flex-nowrap"
+              >
+                <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500">
+                      Created by
+                    </dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                      {{ runningBatch.loggedUser }}
+                    </dd>
+                  </div>
+                  <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500">
+                      Created at
+                    </dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                      {{ new Date(runningBatch._time).toLocaleString("en-US") }}
+                    </dd>
+                  </div>
+                </dl>
+                <div class="flex-shrink-0 self-end">
+                  <button
+                    @click="stopCurrentBatch"
+                    type="button"
+                    class="inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gradient-to-r from-orange-500 to-pink-500 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+                  >
+                    Stop Batch
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-          <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-            <button
-              @click="
-                $timedb.writeEvent('Vertuo Charge xy, 200 pieces', 'BatchStart')
-              "
-              class="bg-gray-800 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
-            >
-              Save
-            </button>
+          <!-- Skeleton Loader -->
+          <div
+            v-else
+            class="animate-pulse flex space-x-3 py-2 hover:bg-gray-50 sm:py-4"
+          >
+            <!-- <div class="rounded-full bg-orange-200 h-12 w-12"></div> -->
+            <div class="flex-1 space-y-2 py-1">
+              <div class="h-8 bg-orange-200 rounded w-full"></div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Billing history -->
+    <!-- Batch List -->
     <section aria-labelledby="billing_history_heading">
       <div class="bg-white pt-6 shadow sm:rounded-md sm:overflow-hidden">
         <div class="px-4 sm:px-6">
@@ -166,7 +137,7 @@
             id="billing_history_heading"
             class="text-lg leading-6 font-medium text-gray-900"
           >
-            Billing history
+            Finished Batches
           </h2>
         </div>
         <div class="mt-6 flex flex-col">
@@ -182,19 +153,25 @@
                         scope="col"
                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
-                        Date
+                        Name
                       </th>
                       <th
                         scope="col"
                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
-                        Description
+                        Start Date
                       </th>
                       <th
                         scope="col"
                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
-                        Amount
+                        Stop Date
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        Created by
                       </th>
                       <!--
                             `relative` is added here due to a weird bug in Safari that causes `sr-only` headings to introduce overflow on the body on mobile.
@@ -207,22 +184,30 @@
                       </th>
                     </tr>
                   </thead>
-                  <tbody class="bg-white divide-y divide-gray-200">
-                    <tr>
+                  <tbody
+                    class="bg-white divide-y divide-gray-200"
+                    v-if="isLoaded"
+                  >
+                    <tr v-for="batch in batches" :key="batch.BatchName">
                       <td
                         class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
                       >
-                        1/1/2020
+                        {{ batch.BatchName }}
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                      >
+                        {{ new Date(batch.StartTime).toLocaleString("en-US") }}
+                      </td>
+                      <td
+                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                      >
+                        {{ new Date(batch.EndTime).toLocaleString("en-US") }}
                       </td>
                       <td
                         class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
                       >
-                        Business Plan - Annual Billing
-                      </td>
-                      <td
-                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                      >
-                        CA$109.00
+                        {{ batch.loggedUser_StartTime }}
                       </td>
                       <td
                         class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
@@ -230,12 +215,27 @@
                         <a
                           href="#"
                           class="text-orange-600 hover:text-orange-900"
-                          >View receipt</a
+                          >View details
+                          <span
+                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"
+                          >
+                            coming soon
+                          </span></a
                         >
                       </td>
                     </tr>
                   </tbody>
                 </table>
+                <!-- Skeleton loader -->
+                <div
+                  v-if="!isLoaded"
+                  class="animate-pulse flex space-x-3 pl-4 pr-6 py-5 hover:bg-gray-50 sm:py-6 sm:pl-6 lg:pl-8 xl:pl-6"
+                >
+                  <!-- <div class="rounded-full bg-orange-200 h-12 w-12"></div> -->
+                  <div class="flex-1 space-y-2 py-1">
+                    <div class="h-8 bg-orange-200 rounded w-full"></div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -246,7 +246,70 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data: function () {
+    return {
+      batches: [],
+      runningBatch: {},
+      newBatchName: "",
+      isLoaded: false,
+    };
+  },
+  async mounted() {
+    await this.reloadFinishedBatches();
+    await this.getRunningBatch();
+    this.isLoaded = true;
+  },
+  methods: {
+    async startNewBatch(newBatchName) {
+      let response = await this.$timedb.writeEvent(newBatchName, "BatchStart");
+      if (!response.ok) {
+        $nuxt.error({
+          statusCode: response.status,
+          message: response.statusText,
+        });
+      }
+      await this.getRunningBatch();
+    },
+    async stopCurrentBatch() {
+      let response = await this.$timedb.writeEvent(
+        this.runningBatch.BatchName,
+        "BatchEnd"
+      );
+      if (!response.ok) {
+        $nuxt.error({
+          statusCode: response.status,
+          message: response.statusText,
+        });
+      }
+      await this.getRunningBatch();
+      await this.reloadFinishedBatches();
+    },
+    async reloadFinishedBatches() {
+      try {
+        const batchArray = await this.$timedb.getFinishedBatches();
+        this.batches = this.sortByDate(batchArray);
+      } catch (error) {
+        console.error(error.message);
+      }
+    },
+    async getRunningBatch() {
+      try {
+        const runningBatch = await this.$timedb.getRunningBatch();
+        this.runningBatch = runningBatch;
+      } catch (error) {
+        console.error(error.message);
+      }
+    },
+    sortByDate(arr) {
+      arr.sort(function (a, b) {
+        return Number(new Date(b.StartTime)) - Number(new Date(a.StartTime));
+      });
+
+      return arr;
+    },
+  },
+};
 </script>
 
 <style>
