@@ -1,14 +1,14 @@
 <template>
   <div>
     <header>
-      <div class="max-w-7xl mx-auto py-4 px-4 xl:px-0">
+      <div class="max-w-7xl mx-auto py-4 px-2 sm:px-4 lg:px-8">
         <h1 class="text-lg leading-6 font-semibold text-gray-900">
           Getting Started
         </h1>
       </div>
     </header>
 
-    <main class="max-w-7xl mx-auto pb-10">
+    <main class="max-w-7xl mx-auto pb-10 px-2 sm:px-4 lg:px-8">
       <!-- Starting steps list -->
       <div class="bg-gray-100 p-4 rounded-md">
         <ul
@@ -40,7 +40,7 @@
             <!-- Footer -->
             <div>
               <NuxtLink
-                to="#"
+                to="/files"
                 type="button"
                 class="inline-flex justify-center w-full rounded-md shadow-sm px-4 py-2 text-base font-medium text-pink-800 bg-pink-200 hover:bg-pink-300 focus:outline-none sm:text-sm"
               >
