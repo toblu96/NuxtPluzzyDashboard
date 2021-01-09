@@ -55,7 +55,7 @@
           </div>
         </div>
         <!-- Action buttons -->
-        <div class="flex flex-col sm:flex-row xl:flex-col">
+        <!-- <div class="flex flex-col sm:flex-row xl:flex-col">
           <button
             @click="$emit('showConfigModal')"
             type="button"
@@ -70,62 +70,76 @@
           >
             Upload Graphic
           </button>
-        </div>
+        </div> -->
       </div>
-      <!-- Meta info -->
-      <div
-        v-if="localAuth.user != undefined"
-        class="flex flex-col space-y-6 sm:flex-row sm:space-y-0 sm:space-x-8 xl:flex-col xl:space-x-0 xl:space-y-6"
-      >
-        <div
-          v-show="localAuth.user.is_admin"
-          class="flex items-center space-x-2"
-        >
-          <!-- Heroicon name: badge-check -->
-          <svg
-            class="h-5 w-5 text-gray-400"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
+
+      <!-- Sidebar Search -->
+      <div>
+        <label for="search" class="sr-only">Search Files</label>
+        <div class="mt-1 relative rounded-md shadow-sm">
+          <div
+            class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
             aria-hidden="true"
           >
-            <path
-              fill-rule="evenodd"
-              d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-              clip-rule="evenodd"
-            />
-          </svg>
-          <span class="text-sm text-gray-500 font-medium">Admin User</span>
-        </div>
-        <div class="flex items-center space-x-2">
-          <!-- Heroicon name: collection -->
-          <svg
-            class="h-5 w-5 text-gray-400"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"
-            />
-          </svg>
-          <span class="text-sm text-gray-500 font-medium">8 Projects</span>
+            <!-- Heroicon name: search -->
+            <svg
+              class="mr-3 h-4 w-4 text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <input
+            type="search"
+            name="search"
+            id="search"
+            class="focus:ring-pink-500 focus:border-pink-500 block w-full pl-9 sm:text-sm border-gray-300 rounded-md"
+            placeholder="Search files"
+            v-model="searchString"
+            ref="searchInput"
+            @keydown.esc="
+              $refs.searchInput.blur();
+              updateSearchString('');
+            "
+          />
         </div>
       </div>
+
+      <!-- Submenu -->
     </div>
   </div>
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+import debounce from "lodash/debounce";
+
 export default {
   data: function () {
     return {
       localAuth: {},
+      searchString: "",
     };
   },
   mounted() {
     this.localAuth = this.$auth;
+  },
+  watch: {
+    searchString: debounce(function (newVal, oldVal) {
+      this.updateSearchString(newVal);
+    }, 500),
+  },
+  methods: {
+    ...mapMutations({
+      updateSearchString: "gitFiles/updateSearchString",
+    }),
   },
 };
 </script>

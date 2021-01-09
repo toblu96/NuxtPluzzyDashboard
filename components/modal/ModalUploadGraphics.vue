@@ -198,6 +198,14 @@ export default {
       commitMessage: "",
     };
   },
+  created() {
+    this.$nuxt.$on("modal-upload-screen-open", () => {
+      this.show();
+    });
+  },
+  beforeDestroy() {
+    this.$nuxt.$off("modal-upload-screen-open");
+  },
   mounted() {
     this.$refs.fileupload.onchange = (fileInput) => {
       let selectedFiles = [...fileInput.srcElement.files];

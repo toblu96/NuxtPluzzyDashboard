@@ -40,7 +40,7 @@
             <!-- Footer -->
             <div>
               <NuxtLink
-                to="/files"
+                to="/project/files/config"
                 type="button"
                 class="inline-flex justify-center w-full rounded-md shadow-sm px-4 py-2 text-base font-medium text-pink-800 bg-pink-200 hover:bg-pink-300 focus:outline-none sm:text-sm"
               >
@@ -75,7 +75,7 @@
             <!-- Footer -->
             <div>
               <NuxtLink
-                to="#"
+                to="/project/files/screen"
                 type="button"
                 class="inline-flex justify-center w-full rounded-md shadow-sm px-4 py-2 text-base font-medium text-pink-800 bg-pink-200 hover:bg-pink-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-300 sm:text-sm"
               >

@@ -200,6 +200,15 @@ export default {
       commitMessage: "",
     };
   },
+
+  created() {
+    this.$nuxt.$on("modal-upload-config-open", () => {
+      this.show();
+    });
+  },
+  beforeDestroy() {
+    this.$nuxt.$off("modal-upload-config-open");
+  },
   mounted() {
     this.$refs.fileupload.onchange = (fileInput) => {
       let selectedFiles = [...fileInput.srcElement.files];
@@ -222,7 +231,11 @@ export default {
     removeFiles() {
       this.files = "";
       var input = this.$refs.fileupload;
-      input.value = "";
+      try {
+        input.value = "";
+      } catch (error) {
+        console.error(error);
+      }
     },
     async uploadFiles() {
       // set default commit message

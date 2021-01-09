@@ -8,7 +8,7 @@
         />
       </template>
       <template slot="main">
-        <projects-list />
+        <NuxtChild />
       </template>
       <template slot="right">
         <activity-feed />
