@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  layout: "application",
+  layout: "applicationSecondNav",
 };
 </script>
 
