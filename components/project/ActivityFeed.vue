@@ -66,7 +66,7 @@ export default {
       const responses = await Promise.all([this.$gitApi.getProjectCommits()]);
       const badResponse = responses.find((response) => !response.ok);
       if (badResponse) {
-        return error({
+        return $nuxt.error({
           statusCode: badResponse.status,
           message: badResponse.statusText,
         });

@@ -18,6 +18,9 @@ module.exports = {
       minHeight: {
         '20': '5rem',
         '56': '14rem',
+      },
+      fontSize: {
+        'huge': '40rem'
       }
     },
   },

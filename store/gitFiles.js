@@ -13,7 +13,7 @@ export const mutations = {
         const response = await this.$gitApi.getProjectTree("deploy/telegraf/OPC_UA")
         console.log(response)
         if (!response.ok) {
-            $nuxt.error({
+            return $nuxt.error({
                 statusCode: response.status,
                 message: response.statusText,
             });
@@ -26,7 +26,7 @@ export const mutations = {
             files.map(async (file, index) => {
                 const response = await this.$gitApi.getLastFileCommit(file.path);
                 if (!response.ok) {
-                    $nuxt.error({
+                    return $nuxt.error({
                         statusCode: response.status,
                         message: response.statusText,
                     });
