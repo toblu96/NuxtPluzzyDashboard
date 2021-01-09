@@ -6,7 +6,7 @@
     >
       <!-- Projects List Header -->
       <div class="flex items-center">
-        <h1 class="flex-1 text-lg font-medium">Data Connection Files</h1>
+        <h1 class="flex-1 text-lg font-medium">Screen Files</h1>
         <div>
           <button
             @click="$nuxt.$emit('modal-upload-screen-open')"
@@ -28,7 +28,7 @@
                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
               ></path>
             </svg>
-            <p>Upload Screen</p>
+            <p>Upload New Screen</p>
           </button>
         </div>
       </div>
@@ -43,33 +43,84 @@
         <li
           v-for="file in files"
           :key="file.path"
-          class="relative pl-4 pr-6 py-5 hover:bg-gray-50 sm:py-6 sm:pl-6 lg:pl-8 xl:pl-6"
+          class="relative space-y-4 pl-4 pr-6 py-5 hover:bg-gray-50 sm:py-6 sm:pl-6 lg:pl-8 xl:pl-6"
           :class="
             file.isDeleting
               ? 'animate-pulse bg-gradient-to-r from-orange-100 to-pink-100'
               : ''
           "
         >
-          <div class="flex items-center justify-between space-x-4">
-            <!-- Repo name and link -->
-            <div class="min-w-0 space-y-3">
-              <div class="flex items-center space-x-3">
-                <span
-                  class="h-4 w-4 bg-green-100 rounded-full flex items-center justify-center"
-                  aria-hidden="true"
-                >
-                  <span class="h-2 w-2 bg-green-400 rounded-full"></span>
-                </span>
-
-                <span class="block">
-                  <h2 class="text-sm font-medium">
-                    <a href="#">
-                      <span class="absolute inset-0" aria-hidden="true"></span>
-                      {{ file.name }} <span class="sr-only">Running</span>
-                    </a>
-                  </h2>
-                </span>
+          <!-- card heading -->
+          <div class="flex justify-between">
+            <div>
+              <span class="block">
+                <h2 class="text-sm font-medium">
+                  <a href="#">
+                    <span class="absolute inset-0" aria-hidden="true"></span>
+                    {{ file.name }} <span class="sr-only">Running</span>
+                  </a>
+                </h2>
+              </span>
+            </div>
+            <div>
+              <div class="hidden sm:flex itemsd-center space-x-4">
+                <div class="group relative">
+                  <button
+                    @click="$store.commit('gitFiles/deleteFile', file.path)"
+                    class="flex items-center space-x-1 text-sm text-gray-500 group-hover:text-gray-900 font-medium focus:outline-none"
+                  >
+                    <svg
+                      class="h-5 w-5 text-gray-500 group-hover:text-gray-900"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                      ></path>
+                    </svg>
+                    <span> Delete file </span>
+                  </button>
+                </div>
               </div>
+            </div>
+          </div>
+
+          <!-- image preview -->
+          <div class="flex justify-between">
+            <div class="w-full">
+              <img
+                class="h-20 sm:h-56 mx-auto"
+                :src="gitlabRawFilePath(file.path)"
+                alt=""
+              />
+            </div>
+
+            <div class="flex sm:hidden items-center">
+              <!-- Heroicon name: chevron-right -->
+              <svg
+                class="h-5 w-5 text-gray-400"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <!-- card footer -->
+          <div class="flex justify-between">
+            <div>
               <a
                 :href="gitlabFilePath(file.path)"
                 target="_blank"
@@ -96,51 +147,8 @@
                 </span>
               </a>
             </div>
-            <div class="sm:hidden">
-              <!-- Heroicon name: chevron-right -->
-              <svg
-                class="h-5 w-5 text-gray-400"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-            </div>
-            <!-- Repo meta info -->
-            <div
-              class="hidden sm:flex flex-col flex-shrink-0 items-end space-y-3"
-            >
-              <div class="flex items-center space-x-4">
-                <div class="group relative">
-                  <button
-                    @click="$store.commit('gitFiles/deleteFile', file.path)"
-                    class="flex items-center space-x-1 text-sm text-gray-500 group-hover:text-gray-900 font-medium focus:outline-none"
-                  >
-                    <svg
-                      class="h-5 w-5 text-gray-500 group-hover:text-gray-900"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      ></path>
-                    </svg>
-                    <span> Delete file </span>
-                  </button>
-                </div>
-              </div>
-              <p class="flex text-gray-500 text-sm space-x-2">
+            <div>
+              <p class="hidden sm:flex text-gray-500 text-sm space-x-2">
                 <span>{{ fileType(shortFilePath(file.path)) }}</span>
                 <span aria-hidden="true">&middot;</span>
                 <span
@@ -211,6 +219,15 @@ export default {
         process.env.GITLAB_PROJECT_PATH +
         "/-/blob/master/" +
         filename
+      );
+    },
+    gitlabRawFilePath(filePath) {
+      return (
+        process.env.GITLAB_BASEURL +
+        "/" +
+        process.env.GITLAB_PROJECT_PATH +
+        "/-/raw/master/" +
+        filePath
       );
     },
     shortFilePath(path) {
