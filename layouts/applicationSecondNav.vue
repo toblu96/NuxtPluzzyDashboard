@@ -25,7 +25,7 @@
         </NuxtLink>
 
         <NuxtLink
-          to="#"
+          to="/project/explore"
           class="rounded-md py-2 px-3 inline-flex items-center text-sm font-medium text-gray-900 bg-gray-100 hover:bg-gray-200 hover:text-gray-900"
         >
           Explore Data Connections
