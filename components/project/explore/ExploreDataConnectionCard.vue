@@ -28,12 +28,12 @@
           </p>
         </div>
 
-        <a
-          href="#"
+        <NuxtLink
+          :to="'explore/' + fileData.id"
           @mouseover="showTooltip = true"
           @mouseleave="showTooltip = false"
           class="text-gray-900 font-medium hover:text-gray-600"
-          >{{ fileData.name }}</a
+          >{{ fileData.name }}</NuxtLink
         >
         <p class="text-gray-500">
           {{ fileType(shortFilePath(fileData.path)) }} Connection

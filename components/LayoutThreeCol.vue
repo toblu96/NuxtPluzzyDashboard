@@ -5,7 +5,7 @@
     <div class="fixed right-0 w-1/2 h-full bg-gray-50" aria-hidden="true"></div>
     <div class="relative min-h-screen flex flex-col">
       <!-- 3 column wrapper -->
-      <div class="flex-grow w-full max-w-7xl mx-auto xl:px-8 lg:flex">
+      <div class="flex-grow w-full max-w-7xl mx-auto lg:flex">
         <!-- Left sidebar & main wrapper -->
         <div class="flex-1 min-w-0 bg-white xl:flex">
           <div
