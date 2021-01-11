@@ -18,9 +18,23 @@
       class="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate"
     >
       <div class="flex-1 px-4 py-2 text-sm truncate">
-        <a href="#" class="text-gray-900 font-medium hover:text-gray-600">{{
-          fileData.name
-        }}</a>
+        <!-- tooltip -->
+        <div
+          v-if="showTooltip"
+          class="origin-bottom-left transform -translate-y-full p-2 absolute z-0 hidden sm:inline-block text-sm rounded-lg bg-gray-700 text-white border border-pink-400"
+        >
+          <p>
+            {{ fileData.name }}
+          </p>
+        </div>
+
+        <a
+          href="#"
+          @mouseover="showTooltip = true"
+          @mouseleave="showTooltip = false"
+          class="text-gray-900 font-medium hover:text-gray-600"
+          >{{ fileData.name }}</a
+        >
         <p class="text-gray-500">
           {{ fileType(shortFilePath(fileData.path)) }} Connection
         </p>
@@ -75,7 +89,7 @@
                 >View in Git
               </a>
               <button
-                href="#"
+                @click="$store.commit('gitFiles/deleteFile', fileData.path)"
                 class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                 role="menuitem"
               >
@@ -105,6 +119,7 @@ export default {
   data: function () {
     return {
       showDropdown: false,
+      showTooltip: false,
     };
   },
   methods: {
