@@ -1,5 +1,5 @@
 <template>
-  <div class="px-4 py-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
+  <div class="py-12 mx-auto">
     <!-- second header -->
     <div class="pb-5 border-b border-gray-200 sm:pb-0">
       <h3 class="text-lg leading-6 font-medium text-gray-900">
