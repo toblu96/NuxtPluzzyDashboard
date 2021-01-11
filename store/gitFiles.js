@@ -38,6 +38,11 @@ export const mutations = {
             })
         );
 
+        // sort files by name
+        files.sort(function (a, b) {
+            return a.name.localeCompare(b.name)
+        });
+
         state.configFiles = files
         state.loaded = true
     },
