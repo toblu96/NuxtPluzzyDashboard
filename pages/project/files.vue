@@ -15,13 +15,13 @@
       </template>
     </layout-three-col>
     <modal-upload-graphics ref="showGraphicsModal" />
-    <modal-upload-config ref="showConfigModal" />
+    <modal-upload-config-new ref="showConfigModal" />
   </div>
 </template>
 
 <script>
 export default {
-  layout: "applicationSecondNav",
+  layout: "application-second-nav",
 };
 </script>
 

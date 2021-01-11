@@ -20,7 +20,7 @@
 import { mapGetters } from "vuex";
 
 export default {
-  layout: "applicationSecondNav",
+  layout: "application-second-nav",
 
   computed: {
     ...mapGetters({
