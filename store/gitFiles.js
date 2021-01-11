@@ -7,18 +7,21 @@ export const state = () => ({
 
 export const mutations = {
     async updateConfigFiles(state) {
-        console.log("update files from vuex")
         state.loaded = false
         // get Project Files
-        const response = await this.$gitApi.getProjectTree("deploy/telegraf/OPC_UA")
-        console.log(response)
+        const response = await this.$gitApi.getProjectTree("deploy/telegraf")
         if (!response.ok) {
             return $nuxt.error({
                 statusCode: response.status,
                 message: response.statusText,
             });
         }
-        const files = response.json
+        let files = response.json
+
+        // remove folder locations so only files get listed
+        files = files.filter((file, idx, files) => {
+            return file.type == 'blob'
+        });
         console.log(files)
 
         // add commit data
@@ -37,7 +40,6 @@ export const mutations = {
 
         state.configFiles = files
         state.loaded = true
-        console.log("finished")
     },
     async updateGraphicFiles(state) {
         state.loaded = false
