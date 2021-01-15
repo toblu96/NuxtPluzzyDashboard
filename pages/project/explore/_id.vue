@@ -188,6 +188,7 @@ export default {
       );
       if (!response.ok) {
         console.error(response.status, response.statusText);
+        this.isLoaded = true;
         return;
       }
       this.configFile = response.json;
