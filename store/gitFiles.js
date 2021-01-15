@@ -11,8 +11,6 @@ export const mutations = {
         // get Project Files
         const response = await this.$gitApi.getProjectTree("deploy/telegraf")
         if (!response.ok) {
-            console.log(response)
-            return
             return $nuxt.error({
                 statusCode: response.status,
                 message: response.statusText,
