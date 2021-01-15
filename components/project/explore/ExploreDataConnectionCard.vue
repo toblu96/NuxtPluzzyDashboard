@@ -29,7 +29,7 @@
         </div>
 
         <NuxtLink
-          :to="'explore/' + fileData.id"
+          :to="'/project/explore/' + fileData.id"
           @mouseover="showTooltip = true"
           @mouseleave="showTooltip = false"
           class="text-gray-900 font-medium hover:text-gray-600"

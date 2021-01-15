@@ -51,6 +51,7 @@ export default {
     INFLUXDB_BASEURL: process.env.INFLUXDB_BASEURL,
     INFLUXDB_TOKEN: process.env.INFLUXDB_TOKEN,
     INFLUXDB_ORGNAME: process.env.INFLUXDB_ORGNAME,
+    GRAFANA_BASEURL: process.env.GRAFANA_BASEURL,
   },
   router: {
     middleware: ['auth'],

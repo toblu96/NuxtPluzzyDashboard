@@ -11,6 +11,8 @@ export const mutations = {
         // get Project Files
         const response = await this.$gitApi.getProjectTree("deploy/telegraf")
         if (!response.ok) {
+            console.log(response)
+            return
             return $nuxt.error({
                 statusCode: response.status,
                 message: response.statusText,
@@ -22,7 +24,6 @@ export const mutations = {
         files = files.filter((file, idx, files) => {
             return file.type == 'blob'
         });
-        console.log(files)
 
         // add commit data
         await Promise.all(
@@ -119,6 +120,7 @@ export const getters = {
     getConfigFiles: (state) => {
         return findEntry(state.configFiles, state.searchString)
     },
+    getConfigFileById: state => id => state.configFiles.find(file => file.id == id),
     getGraphicFiles: (state) => {
         return findEntry(state.graphicFiles, state.searchString)
     },

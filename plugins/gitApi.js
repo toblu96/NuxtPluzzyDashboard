@@ -20,6 +20,7 @@ export default function (context, inject) {
         getProjecs,
         getProjectTree,
         getProjectFile,
+        getProjectFileRaw,
         getProjectCommits,
         getFileCommits,
         getLastFileCommit,
@@ -50,6 +51,15 @@ export default function (context, inject) {
         try {
             const path = encodeURIComponent(filePath)
             return unWrap(await fetch(`${baseUrl}/api/${apiVersion}/projects/${projectPath}/repository/files/${path}?ref=master`, { headers }))
+        } catch (error) {
+            return getErrorResponse(error)
+        }
+    }
+
+    async function getProjectFileRaw(filePath) {
+        try {
+            const path = encodeURIComponent(filePath)
+            return unWrap(await fetch(`${baseUrl}/api/${apiVersion}/projects/${projectPath}/repository/files/${path}/raw?ref=master`, { headers }))
         } catch (error) {
             return getErrorResponse(error)
         }
