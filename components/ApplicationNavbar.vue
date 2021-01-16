@@ -14,8 +14,9 @@
           </div>
         </NuxtLink>
 
-        <!-- Search section -->
+        <!-- Search section (not in use) -->
         <div
+          v-if="false"
           v-show="$auth.loggedIn && $nuxt.$route.path == '/project'"
           class="flex flex-1 justify-center lg:justify-end"
         >
