@@ -175,7 +175,12 @@
           <NuxtLink
             to="/settings"
             class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-pink-200 hover:text-pink-100 hover:bg-pink-600"
-            >Settings
+            >Admin
+            <span
+              class="inline-flex items-center px-2.5 py-0.5 ml-3 rounded-md text-sm font-medium bg-orange-100 text-orange-800"
+            >
+              Beta
+            </span>
           </NuxtLink>
           <button
             @click="
