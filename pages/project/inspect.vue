@@ -80,7 +80,7 @@
                     d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
                   ></path>
                 </svg>
-                <span>Show Service</span>
+                <span>Show Stack</span>
               </a>
             </div>
           </div>
@@ -227,7 +227,7 @@
                     d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
                   ></path>
                 </svg>
-                <span>Show Service</span>
+                <span>Show Stack</span>
               </a>
             </div>
           </div>
@@ -592,7 +592,7 @@
                 NodeRed
               </span>
               <a
-                :href="`${$nuxt.context.env.SWARMPIT_BASEURL}/#/services/node-red_node-red`"
+                :href="`${$nuxt.context.env.SWARMPIT_BASEURL}/#/stacks/node-red`"
                 target="_blank"
                 class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
               >
@@ -611,7 +611,7 @@
                     d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
                   ></path>
                 </svg>
-                <span>Show Service</span>
+                <span>Show Stack</span>
               </a>
             </div>
           </div>
