@@ -21,23 +21,23 @@
         class="p-6 text-center"
       >
         <h2 class="uppercase text-xl lg:text-5xl font-black">
-          It seems that your GitLab token has expired.
+          It seems that your GitLab token was revoked.
           <p class="mt-3 uppercase text-sm lg:text-base text-gray-700">
             Please refresh your token by pressing the button below to
-            reinitialize the GitLab auth process.
+            re-authorize your GitLab user.
           </p>
         </h2>
         <p class="m-8 uppercase text-lg lg:text-3xl text-gray-700">
           Error Message: {{ error.message }}
         </p>
 
-        <NuxtLink
-          to="/login"
+        <button
+          @click="$nuxt._router.go()"
           type="button"
           class="inline-flex justify-center rounded-md shadow-sm mt-8 px-8 sm:px-20 py-4 text-2xl font-light text-white bg-gradient-to-r from-orange-500 to-pink-500 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 sm:text-sm"
         >
-          <p class="text-2xl">Reauthentication at GitLab</p>
-        </NuxtLink>
+          <p class="text-2xl">Re-authorize at GitLab</p>
+        </button>
       </div>
 
       <!-- Normal error -->
