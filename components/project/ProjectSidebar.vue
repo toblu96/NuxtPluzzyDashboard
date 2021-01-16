@@ -135,6 +135,10 @@ export default {
     searchString: debounce(function (newVal, oldVal) {
       this.updateSearchString(newVal);
     }, 500),
+    $route(to, from) {
+      this.updateSearchString("");
+      this.searchString = "";
+    },
   },
   methods: {
     ...mapMutations({
