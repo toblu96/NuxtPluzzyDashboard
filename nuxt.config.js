@@ -21,6 +21,11 @@ export default {
   plugins: [
     '~/plugins/influxdb.client.js',
     '~/plugins/handlebars.js',
+    '~/plugins/swarmpit.js',
+  ],
+
+  serverMiddleware: [
+    { path: "/api", handler: "~/api/rest.js" },
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
