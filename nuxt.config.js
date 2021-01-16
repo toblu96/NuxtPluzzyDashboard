@@ -57,6 +57,8 @@ export default {
     INFLUXDB_TOKEN: process.env.INFLUXDB_TOKEN,
     INFLUXDB_ORGNAME: process.env.INFLUXDB_ORGNAME,
     GRAFANA_BASEURL: process.env.GRAFANA_BASEURL,
+    DOCUMENTATION_URL: process.env.DOCUMENTATION_URL || 'https://github.com/toblu96/NuxtPluzzyDashboard',
+    SUPPORT_URL: process.env.SUPPORT_URL || 'https://github.com/toblu96/NuxtPluzzyDashboard/discussions',
   },
   router: {
     middleware: ['auth'],

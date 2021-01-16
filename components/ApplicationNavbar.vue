@@ -116,12 +116,14 @@
           <div class="flex items-center justify-end">
             <div class="flex">
               <a
-                href="#"
+                :href="$nuxt.context.env.DOCUMENTATION_URL"
+                target="_blank"
                 class="px-3 py-2 rounded-md text-sm font-medium text-pink-200 hover:text-white"
                 >Documentation</a
               >
               <a
-                href="#"
+                :href="$nuxt.context.env.SUPPORT_URL"
+                target="_blank"
                 class="px-3 py-2 rounded-md text-sm font-medium text-pink-200 hover:text-white"
                 >Support</a
               >
@@ -150,12 +152,14 @@
     <div @click="isOpen = false" v-show="isOpen" class="block lg:hidden">
       <div class="px-2 pt-2 pb-3">
         <a
-          href="#"
+          :href="$nuxt.context.env.DOCUMENTATION_URL"
+          target="_blank"
           class="block px-3 py-2 rounded-md text-base font-medium text-pink-200 hover:text-pink-100 hover:bg-pink-600"
-          >Dashboard</a
+          >Documentation</a
         >
         <a
-          href="#"
+          :href="$nuxt.context.env.SUPPORT_URL"
+          target="_blank"
           class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-pink-200 hover:text-pink-100 hover:bg-pink-600"
           >Support</a
         >
