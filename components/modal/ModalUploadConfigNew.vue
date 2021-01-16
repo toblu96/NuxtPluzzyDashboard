@@ -278,6 +278,7 @@ export default {
 
       // write files to Git
       for (var i = 0; i < newFiles.length; i++) {
+        await this.waitFor(300);
         const response = await this.$gitApi.pushFileToRepo(
           newFiles[i],
           this.commitMessage,
