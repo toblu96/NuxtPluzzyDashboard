@@ -1,6 +1,6 @@
 export default async function (context, inject) {
-    const baseUrl = context.env.SWARMPIT_BASEURL
-    const token = context.env.SWARMPIT_TOKEN
+    const baseUrl = context.$config.SWARMPIT_BASEURL
+    const token = context.$config.SWARMPIT_TOKEN
 
     const headers = {
         "Authorization": token,

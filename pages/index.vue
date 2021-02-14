@@ -82,10 +82,11 @@ export default {
       ]);
       const badResponse = responses.find((response) => !response.ok);
       if (badResponse) {
-        $nuxt.error({
-          statusCode: badResponse.status,
-          message: badResponse.statusText,
-        });
+        // $nuxt.error({
+        //   statusCode: badResponse.status,
+        //   message: badResponse.statusText,
+        // });
+        console.log("no image found.. Are the .env vars set?");
       }
       this.images = responses[0].json;
     },

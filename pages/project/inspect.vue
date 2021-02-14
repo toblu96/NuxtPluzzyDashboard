@@ -61,7 +61,7 @@
                 Swarmpit
               </span>
               <a
-                :href="`${$nuxt.context.env.SWARMPIT_BASEURL}/#/stacks/swarmpit`"
+                :href="`${$config.SWARMPIT_BASEURL}/#/stacks/swarmpit`"
                 target="_blank"
                 class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
               >
@@ -89,7 +89,7 @@
             <ul class="divide-y divide-gray-200">
               <li v-for="service in swarmpitServices" :key="service.id">
                 <a
-                  :href="`${$nuxt.context.env.SWARMPIT_BASEURL}/#/services/${service.serviceName}`"
+                  :href="`${$config.SWARMPIT_BASEURL}/#/services/${service.serviceName}`"
                   target="_blank"
                   class="block hover:bg-gray-50"
                 >
@@ -208,7 +208,7 @@
                 GitLab
               </span>
               <a
-                :href="`${$nuxt.context.env.SWARMPIT_BASEURL}/#/stacks/gitlab`"
+                :href="`${$config.SWARMPIT_BASEURL}/#/stacks/gitlab`"
                 target="_blank"
                 class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
               >
@@ -236,7 +236,7 @@
             <ul class="divide-y divide-gray-200">
               <li v-for="service in gitlabServices" :key="service.id">
                 <a
-                  :href="`${$nuxt.context.env.SWARMPIT_BASEURL}/#/services/${service.serviceName}`"
+                  :href="`${$config.SWARMPIT_BASEURL}/#/services/${service.serviceName}`"
                   target="_blank"
                   class="block hover:bg-gray-50"
                 >
@@ -355,7 +355,7 @@
                 InfluxDB
               </span>
               <a
-                :href="`${$nuxt.context.env.SWARMPIT_BASEURL}/#/services/influxdb2_0`"
+                :href="`${$config.SWARMPIT_BASEURL}/#/services/influxdb2_0`"
                 target="_blank"
                 class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
               >
@@ -383,7 +383,7 @@
             <ul class="divide-y divide-gray-200">
               <li v-for="service in influxdbServices" :key="service.id">
                 <a
-                  :href="`${$nuxt.context.env.SWARMPIT_BASEURL}/#/services/${service.serviceName}`"
+                  :href="`${$config.SWARMPIT_BASEURL}/#/services/${service.serviceName}`"
                   target="_blank"
                   class="block hover:bg-gray-50"
                 >
@@ -500,7 +500,7 @@
             <ul class="divide-y divide-gray-200">
               <li v-for="service in telegrafServices" :key="service.id">
                 <a
-                  :href="`${$nuxt.context.env.SWARMPIT_BASEURL}/#/services/${service.serviceName}`"
+                  :href="`${$config.SWARMPIT_BASEURL}/#/services/${service.serviceName}`"
                   target="_blank"
                   class="block hover:bg-gray-50"
                 >
@@ -592,7 +592,7 @@
                 NodeRed
               </span>
               <a
-                :href="`${$nuxt.context.env.SWARMPIT_BASEURL}/#/stacks/node-red`"
+                :href="`${$config.SWARMPIT_BASEURL}/#/stacks/node-red`"
                 target="_blank"
                 class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
               >
@@ -620,7 +620,7 @@
             <ul class="divide-y divide-gray-200">
               <li v-for="service in noderedServices" :key="service.id">
                 <a
-                  :href="`${$nuxt.context.env.SWARMPIT_BASEURL}/#/services/${service.serviceName}`"
+                  :href="`${$config.SWARMPIT_BASEURL}/#/services/${service.serviceName}`"
                   target="_blank"
                   class="block hover:bg-gray-50"
                 >
@@ -739,7 +739,7 @@
                 Grafana
               </span>
               <a
-                :href="`${$nuxt.context.env.SWARMPIT_BASEURL}/#/services/grafana`"
+                :href="`${$config.SWARMPIT_BASEURL}/#/services/grafana`"
                 target="_blank"
                 class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
               >
@@ -767,7 +767,7 @@
             <ul class="divide-y divide-gray-200">
               <li v-for="service in grafanaServices" :key="service.id">
                 <a
-                  :href="`${$nuxt.context.env.SWARMPIT_BASEURL}/#/services/${service.serviceName}`"
+                  :href="`${$config.SWARMPIT_BASEURL}/#/services/${service.serviceName}`"
                   target="_blank"
                   class="block hover:bg-gray-50"
                 >
@@ -889,31 +889,31 @@ export default {
           name: "Swarmpit",
           logo: "swarmpit-logo",
           info: "Manage your Docker Swarm cluster",
-          link: process.env.SWARMPIT_BASEURL,
+          link: this.$config.SWARMPIT_BASEURL,
         },
         {
           name: "GitLab",
           logo: "gitlab-logo",
           info: "The complete DevOps platform",
-          link: process.env.GITLAB_BASEURL,
+          link: this.$config.GITLAB_BASEURL,
         },
         {
           name: "InfluxDB",
           logo: "influxdb-logo",
           info: "Open Source Time Series Database",
-          link: process.env.INFLUXDB_BASEURL,
+          link: this.$config.INFLUXDB_BASEURL,
         },
         {
           name: "NodeRed",
           logo: "nodered-logo",
           info: "Low-code Programming platform",
-          link: process.env.NODERED_BASEURL,
+          link: this.$config.NODERED_BASEURL,
         },
         {
           name: "Grafana",
           logo: "grafana-logo",
           info: "Analytics & Monitoring solution",
-          link: process.env.GRAFANA_BASEURL,
+          link: this.$config.GRAFANA_BASEURL,
         },
       ],
     };

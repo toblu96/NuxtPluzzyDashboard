@@ -114,7 +114,7 @@
             v-for="node in panelNodes"
             :key="node"
             class="w-full h-64 sm:h-96 rounded-md"
-            :src="`${$nuxt.context.env.GRAFANA_BASEURL}/d-solo/1sIiLXaGz/public-dashboard?orgId=1&var-TagName=${node}&theme=light&panelId=4&refresh=10s`"
+            :src="`${$config.GRAFANA_BASEURL}/d-solo/1sIiLXaGz/public-dashboard?orgId=1&var-TagName=${node}&theme=light&panelId=4&refresh=10s`"
           ></iframe>
 
           <div v-if="panelNodes.length == 0">

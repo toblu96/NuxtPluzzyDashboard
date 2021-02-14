@@ -1,5 +1,6 @@
 export default async function (context, inject) {
-    const baseUrl = context.env.NODERED_BASEURL
+
+    const baseUrl = context.$config.NODERED_BASEURL
 
     context.store.$auth.$storage.watchState('loggedIn', async loggedIn => {
 
@@ -22,7 +23,7 @@ export default async function (context, inject) {
         method: 'POST',
         body: JSON.stringify({
             GITLAB_TOKEN: context.store.$auth.strategy.token.get(),
-            SWARMPIT_TOKEN: context.env.SWARMPIT_TOKEN,
+            SWARMPIT_TOKEN: context.$config.SWARMPIT_TOKEN,
         })
     }))
 

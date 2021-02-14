@@ -11,9 +11,9 @@ const { hostname } = require('os')
 export default function (context, inject) {
 
     // config data
-    let url = process.env.INFLUXDB_BASEURL;
-    let token = process.env.INFLUXDB_TOKEN;
-    let org = process.env.INFLUXDB_ORGNAME;
+    let url = context.$config.INFLUXDB_BASEURL;
+    let token = context.$config.INFLUXDB_TOKEN;
+    let org = context.$config.INFLUXDB_ORGNAME;
     let queryApi = null;
     let writeEventApi = null;
 

@@ -214,18 +214,18 @@ export default {
   methods: {
     gitlabFilePath(filename) {
       return (
-        process.env.GITLAB_BASEURL +
+        this.$config.GITLAB_BASEURL +
         "/" +
-        process.env.GITLAB_PROJECT_PATH +
+        this.$config.GITLAB_PROJECT_PATH +
         "/-/blob/master/" +
         filename
       );
     },
     gitlabRawFilePath(filePath) {
       return (
-        process.env.GITLAB_BASEURL +
+        this.$config.GITLAB_BASEURL +
         "/" +
-        process.env.GITLAB_PROJECT_PATH +
+        this.$config.GITLAB_PROJECT_PATH +
         "/-/raw/master/" +
         filePath
       );

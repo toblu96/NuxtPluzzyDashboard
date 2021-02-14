@@ -2,12 +2,6 @@ import Handlebars from "handlebars";
 
 export default function (context, inject) {
 
-    // config data
-    let url = process.env.influx_url;
-    let token = process.env.influx_token;
-    let org = process.env.influx_org;
-    let queryApi = null;
-
     inject('imageTemplate', {
         getTemplateKeys,
         compileTemplate,

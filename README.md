@@ -25,11 +25,11 @@ For detailed explanation on how things work, check out [Nuxt.js docs](https://nu
 Build the docker image
 
 ```bash
-$ docker build -t <username>/NuxtPluzzyDashboard:<tag> .
+$ docker build -t <username>/nuxt-pluzzy-dashboard:<tag> .
 ```
 
 Run the docker image
 
 ```bash
-$ docker run -it -p 5000:5000 NuxtPluzzyDashboard:<tag>
+$ docker run -it -p 5000:5000 nuxt-pluzzy-dashboard:<tag>
 ```

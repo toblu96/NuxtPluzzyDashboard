@@ -15,8 +15,6 @@ app.all('/serverFetch', async (req, res) => {
       headers: req.headers
     })
 
-    console.log(response.data)
-
     res.json(response.data)
   } catch (err) {
     return res.status(err.response.status).send({

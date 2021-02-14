@@ -47,7 +47,7 @@ export default {
     '@nuxt/content',
     '@nuxtjs/auth-next',
   ],
-  env: {
+  publicRuntimeConfig: {
     GITLAB_BASEURL: process.env.GITLAB_BASEURL,
     GITLAB_PROJECT_PATH: process.env.GITLAB_PROJECT_PATH,
     NODERED_BASEURL: process.env.NODERED_BASEURL,
@@ -59,6 +59,10 @@ export default {
     GRAFANA_BASEURL: process.env.GRAFANA_BASEURL,
     DOCUMENTATION_URL: process.env.DOCUMENTATION_URL || 'https://github.com/toblu96/NuxtPluzzyDashboard',
     SUPPORT_URL: process.env.SUPPORT_URL || 'https://github.com/toblu96/NuxtPluzzyDashboard/discussions',
+  },
+  privateRuntimeConfig: {
+    GITLAB_CLIENTID: process.env.GITLAB_CLIENTID,
+    GITLAB_CLIENTSECRET: process.env.GITLAB_CLIENTSECRET,
   },
   router: {
     middleware: ['auth'],
@@ -74,13 +78,13 @@ export default {
     // https://docs.gitlab.com/ee/api/oauth2.html#web-application-flow
     strategies: {
       github: {
-        clientId: process.env.GITLAB_CLIENTID,
-        clientSecret: process.env.GITLAB_CLIENTSECRET,
-        endpoints: {
-          authorization: process.env.GITLAB_BASEURL + '/oauth/authorize',
-          token: process.env.GITLAB_BASEURL + '/oauth/token',
-          userInfo: process.env.GITLAB_BASEURL + '/api/v4/user',
-        },
+        // clientId: process.env.GITLAB_CLIENTID,
+        // clientSecret: process.env.GITLAB_CLIENTSECRET,
+        // endpoints: {
+        //   authorization: process.env.GITLAB_BASEURL + '/oauth/authorize',
+        //   token: process.env.GITLAB_BASEURL + '/oauth/token',
+        //   userInfo: process.env.GITLAB_BASEURL + '/api/v4/user',
+        // },
         scope: 'api read_api read_user write_repository',
         grantType: 'authorization_code',
       },

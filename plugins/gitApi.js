@@ -1,6 +1,6 @@
 export default function (context, inject) {
-    const baseUrl = context.env.GITLAB_BASEURL
-    const projectPath = context.env.GITLAB_PROJECT_PATH.replace(/\//g, '%2F')
+    const baseUrl = context.$config.GITLAB_BASEURL
+    const projectPath = context.$config.GITLAB_PROJECT_PATH.replace(/\//g, '%2F')
     const apiVersion = 'v4'
     const token = context.store.$auth.strategy.token.get()
     const headers = {
@@ -199,9 +199,9 @@ export default function (context, inject) {
     }
 
     function getDefaultPath() {
-        return context.env.GITLAB_BASEURL +
+        return context.$config.GITLAB_BASEURL +
             "/" +
-            context.env.GITLAB_PROJECT_PATH +
+            context.$config.GITLAB_PROJECT_PATH +
             "/-/"
     }
 
