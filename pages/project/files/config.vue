@@ -193,6 +193,11 @@
 import { mapGetters } from "vuex";
 
 export default {
+  data: function () {
+    return {
+      refreshIntervalID: null,
+    };
+  },
   computed: {
     ...mapGetters({
       files: "gitFiles/getConfigFiles",
@@ -201,9 +206,27 @@ export default {
     }),
   },
   async mounted() {
-    await this.$store.commit("gitFiles/updateConfigFiles");
+    this.refreshInterval(5);
+  },
+  beforeDestroy: function () {
+    this.stopInterval();
   },
   methods: {
+    stopInterval() {
+      clearInterval(this.refreshIntervalID);
+    },
+    refreshInterval(interval) {
+      let self = this;
+      this.stopInterval();
+
+      self.$store.commit("gitFiles/updateConfigFiles");
+      if (interval != 0) {
+        console.log("just created a new interval [" + interval + "s]");
+        this.refreshIntervalID = setInterval(async function () {
+          self.$store.commit("gitFiles/updateConfigFiles");
+        }, interval * 1000);
+      }
+    },
     gitlabFilePath(filename) {
       return (
         this.$config.GITLAB_BASEURL +
