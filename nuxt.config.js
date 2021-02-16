@@ -60,10 +60,7 @@ export default {
     DOCUMENTATION_URL: process.env.DOCUMENTATION_URL || 'https://github.com/toblu96/NuxtPluzzyDashboard',
     SUPPORT_URL: process.env.SUPPORT_URL || 'https://github.com/toblu96/NuxtPluzzyDashboard/discussions',
   },
-  privateRuntimeConfig: {
-    GITLAB_CLIENTID: process.env.GITLAB_CLIENTID,
-    GITLAB_CLIENTSECRET: process.env.GITLAB_CLIENTSECRET,
-  },
+  privateRuntimeConfig: {},
   router: {
     middleware: ['auth'],
     prefetchLinks: false,
@@ -78,13 +75,13 @@ export default {
     // https://docs.gitlab.com/ee/api/oauth2.html#web-application-flow
     strategies: {
       github: {
-        // clientId: process.env.GITLAB_CLIENTID,
-        // clientSecret: process.env.GITLAB_CLIENTSECRET,
-        // endpoints: {
-        //   authorization: process.env.GITLAB_BASEURL + '/oauth/authorize',
-        //   token: process.env.GITLAB_BASEURL + '/oauth/token',
-        //   userInfo: process.env.GITLAB_BASEURL + '/api/v4/user',
-        // },
+        clientId: process.env.NODE_ENV !== 'production' ? process.env.GITLAB_CLIENTID : '5d0511d4f5af079c5ff8709cf97095df29120516e4a9775afe62b1640abb1406',
+        clientSecret: process.env.NODE_ENV !== 'production' ? process.env.GITLAB_CLIENTSECRET : 'ff87203e2708efc2ba38ab98c78a21d356c5dcb0ce08f90b6c7d6fc5981fef75',
+        endpoints: {
+          authorization: 'http://192.168.2.21:8929' + '/oauth/authorize',
+          token: 'http://192.168.2.21:8929' + '/oauth/token',
+          userInfo: 'http://192.168.2.21:8929' + '/api/v4/user',
+        },
         scope: 'api read_api read_user write_repository',
         grantType: 'authorization_code',
       },

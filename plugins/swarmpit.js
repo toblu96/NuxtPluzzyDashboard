@@ -16,7 +16,7 @@ export default async function (context, inject) {
     async function getServices() {
         try {
             const reqUrl = `${baseUrl}/api/services`
-            return unWrap(await fetch(`http://localhost:3000/api/serverFetch?url=${reqUrl}`, {
+            return unWrap(await fetch(`http://${window.location.host}/api/serverFetch?url=${reqUrl}`, {
                 headers,
                 method: 'GET',
             }))
