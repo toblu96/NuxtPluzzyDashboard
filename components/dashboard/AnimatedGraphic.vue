@@ -141,6 +141,35 @@ export default {
         }
       }
 
+      // embed iframes
+      let iframeNodes = d3
+        .select(rootElement)
+        .select("svg")
+        .selectAll("g")
+        .nodes();
+      for (let idx = 0; idx < iframeNodes.length; idx++) {
+        if (iframeNodes[idx].id.match(/^iframe/)) {
+          var rect = d3.select(iframeNodes[idx]).select("rect").node();
+          var tag = rect.id;
+
+          console.log("nope");
+
+          d3.select(iframeNodes[idx])
+            .append("foreignObject")
+            .attr("x", rect.x.baseVal.value)
+            .attr("y", rect.y.baseVal.value)
+            .attr("width", rect.width.baseVal.value)
+            .attr("height", rect.height.baseVal.value)
+            .append("iframe")
+            .attr(
+              "src",
+              `${this.$config.GRAFANA_BASEURL}/d-solo/1sIiLXaGz/public-dashboard?orgId=1&var-TagName=${tag}&theme=light&panelId=5&refresh=10s`
+            )
+            .attr("width", rect.width.baseVal.value)
+            .attr("height", rect.height.baseVal.value);
+        }
+      }
+
       return rootElement.innerHTML;
     },
 
