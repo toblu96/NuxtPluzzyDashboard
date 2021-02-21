@@ -29,6 +29,7 @@ export default function (context, inject) {
         updateFileInRepo,
         deleteFileInRepo,
         readFileAsync,
+        commitFiles,
     })
 
     async function getProjecs() {
@@ -181,6 +182,76 @@ export default function (context, inject) {
         }
     }
 
+    async function commitFiles(files, commitMessage = 'Upload new file(s)', filePath = '') {
+        try {
+            let commitActions = {
+                "branch": "master",
+                "commit_message": commitMessage,
+                "actions": []
+            }
+            let contentBuffer = ''
+            let filename = ''
+
+            // read current files
+            const response = await this.getProjectTree(filePath)
+            if (!response.ok) {
+                console.error({
+                    statusCode: badResponse.status,
+                    message: badResponse.statusText,
+                });
+            }
+            const existingFiles = response.json;
+
+            // check for old files to delete
+            const filesToDelete = checkDiff(existingFiles, files)
+            for (let file of filesToDelete) {
+                commitActions.actions.push({
+                    "action": "delete",
+                    "file_path": file.path
+                })
+            }
+
+            // fill new files and check if they exist alredy (to update them)
+            for (let file of files) {
+                // check if input is a file or raw data
+                if (file instanceof File) {
+                    contentBuffer = await readFileAsync(file);
+                    // filename = encodeURIComponent(file.name)
+                    filename = filePath + file.name
+                } else {
+                    contentBuffer = JSON.stringify(file)
+                    // filename = encodeURIComponent(file.name + '.json')
+                    filename = filePath + file.name + '.json'
+                }
+
+                // check if file is new
+                let fileIndex = existingFiles.findIndex(o => o.name.replace('.json', '') == file.name)
+                if (fileIndex == -1) {
+                    commitActions.actions.push({
+                        "action": "create",
+                        "file_path": filename,
+                        "content": contentBuffer
+                    })
+                } else {
+                    commitActions.actions.push({
+                        "action": "update",
+                        "file_path": filename,
+                        "content": contentBuffer
+                    })
+
+                }
+            }
+
+            return unWrap(await fetch(`${baseUrl}/api/${apiVersion}/projects/${projectPath}/repository/commits`, {
+                headers,
+                method: 'POST',
+                body: JSON.stringify(commitActions)
+            }))
+        } catch (error) {
+            return getErrorResponse(error)
+        }
+    }
+
 
     async function unWrap(response) {
         let json = ''
@@ -247,5 +318,21 @@ export default function (context, inject) {
                 reader.readAsArrayBuffer(file);
             }
         })
+    }
+
+    function checkDiff(existingFiles, newFiles) {
+        return existingFiles.filter((existingFile) => {
+            let exists = false;
+            for (let index = 0; index < newFiles.length; index++) {
+                if (
+                    newFiles[index].name.replace(".json", "") ==
+                    existingFile.name.replace(".json", "")
+                ) {
+                    exists = true;
+                    break;
+                }
+            }
+            return !exists;
+        });
     }
 }

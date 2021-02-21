@@ -242,60 +242,18 @@ export default {
 
       // read new file data
       let newFiles = await this.decodeXSLXFile(this.files[0]);
-      console.log(newFiles);
 
-      // read old files
-      const responses = await Promise.all([
-        this.$gitApi.getProjectTree("deploy/config"),
-      ]);
-      const badResponse = responses.find((response) => !response.ok);
-      if (badResponse) {
-        $nuxt.error({
-          statusCode: badResponse.status,
-          message: badResponse.statusText,
+      const response = await this.$gitApi.commitFiles(
+        newFiles,
+        this.commitMessage,
+        "deploy/config/"
+      );
+
+      if (!response.ok) {
+        console.error({
+          statusCode: response.status,
+          message: response.statusText,
         });
-      }
-      const existingFiles = responses[0].json;
-
-      // delete old files
-      const diff = this.checkDiff(existingFiles, newFiles);
-
-      for (var i = 0; i < diff.length; i++) {
-        if (diff[i].name == ".gitkeep") continue;
-
-        const response = await this.$gitApi.deleteFileInRepo(
-          "deploy/config/" + diff[i].name,
-          this.commitMessage
-        );
-
-        if (!response.ok) {
-          $nuxt.error({
-            statusCode: response.status,
-            message: response.statusText,
-          });
-        }
-      }
-
-      // write files to Git
-      for (var i = 0; i < newFiles.length; i++) {
-        await this.waitFor(300);
-        const response = await this.$gitApi.pushFileToRepo(
-          newFiles[i],
-          this.commitMessage,
-          "deploy/config/"
-        );
-
-        if (!response.ok) {
-          if (response.json.message == "A file with this name already exists") {
-            // check if error occours because file does exist already
-            await this.updateFile(newFiles[i]);
-          } else {
-            $nuxt.error({
-              statusCode: response.status,
-              message: response.statusText,
-            });
-          }
-        }
       }
 
       this.hide();
