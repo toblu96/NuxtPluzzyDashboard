@@ -63,7 +63,7 @@
 
 <script>
 export default {
-  layout: "application",
+  layout: "application-second-nav",
   auth: false,
   data: function () {
     return {
