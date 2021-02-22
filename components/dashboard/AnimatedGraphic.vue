@@ -217,7 +217,8 @@ export default {
     },
     unwrapHelper(prefix) {
       // get rid of brackets and trailing/ending spaces
-      let prefixAndTagname = prefix
+      let pref = prefix.match(/\[\[(.+)\]\]/gi)[0];
+      let prefixAndTagname = pref
         .replace("[[", "")
         .replace("]]", "")
         .trim()
