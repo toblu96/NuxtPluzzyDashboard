@@ -8,8 +8,8 @@
           <div class="flex-shrink-0">
             <img
               class="h-8 w-auto"
-              src="https://tailwindui.com/img/logos/workflow-mark-gray-300.svg"
-              alt="Workflow"
+              :src="require(`~/assets/images/logos/PluzzyLogo.svg`)"
+              alt="Pluzzy Logo"
             />
           </div>
         </NuxtLink>
