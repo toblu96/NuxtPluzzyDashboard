@@ -83,6 +83,10 @@ export default {
           timedbData
         );
         await this.waitFor(10);
+
+        // change state colors
+        this.changeStateColors();
+
         this.resetImageSize();
       } catch (error) {
         this.errorMessage = error;
@@ -145,32 +149,49 @@ export default {
       let iframeNodes = d3
         .select(rootElement)
         .select("svg")
-        .selectAll("g")
+        .selectAll("g, rect")
         .nodes();
-      for (let idx = 0; idx < iframeNodes.length; idx++) {
-        if (iframeNodes[idx].id.match(/^iframe/)) {
-          var rect = d3.select(iframeNodes[idx]).select("rect").node();
-          var tag = rect.id;
 
-          console.log("nope");
-
-          d3.select(iframeNodes[idx])
+      for (let node of iframeNodes) {
+        if (!this.isValidPrefix(node.id)) continue;
+        let { helper, tagname, error } = this.unwrapHelper(node.id);
+        if (helper == "graph") {
+          console.log("graph");
+          d3.select('[id="svgImage"]')
+            .select("svg")
             .append("foreignObject")
-            .attr("x", rect.x.baseVal.value)
-            .attr("y", rect.y.baseVal.value)
-            .attr("width", rect.width.baseVal.value)
-            .attr("height", rect.height.baseVal.value)
+            .attr("x", node.x.baseVal.value)
+            .attr("y", node.y.baseVal.value)
+            .attr("width", node.width.baseVal.value)
+            .attr("height", node.height.baseVal.value)
             .append("iframe")
             .attr(
               "src",
-              `${this.$config.GRAFANA_BASEURL}/d-solo/1sIiLXaGz/public-dashboard?orgId=1&var-TagName=${tag}&theme=light&panelId=5&refresh=10s`
+              `${this.$config.GRAFANA_BASEURL}/d-solo/1sIiLXaGz/public-dashboard?orgId=1&var-TagName=${tagname}&theme=light&panelId=5&refresh=10s`
             )
-            .attr("width", rect.width.baseVal.value)
-            .attr("height", rect.height.baseVal.value);
+            .attr("width", node.width.baseVal.value)
+            .attr("height", node.height.baseVal.value);
         }
       }
 
       return rootElement.innerHTML;
+    },
+    async changeStateColors() {
+      let allNodes = d3
+        .select('[id="svgImage"]')
+        .selectAll("g, circle, rect, path, text")
+        .nodes();
+
+      for (let node of allNodes) {
+        if (!this.isValidPrefix(node.id)) continue;
+        let { helper, tagname, error } = this.unwrapHelper(node.id);
+        if (helper == "show") {
+          let tagValue = await this.$timedb.getLastEntry(tagname);
+          let visibleState = tagValue ? "visible" : "hidden";
+          d3.select(node).attr("visibility", visibleState);
+          console.log("new State");
+        }
+      }
     },
 
     resetImageSize() {
@@ -190,6 +211,33 @@ export default {
         }
       }
       return localData;
+    },
+
+    isValidPrefix(data) {
+      const regex = /\[\[(.+)\]\].*/gi;
+      return regex.test(data);
+    },
+    unwrapHelper(prefix) {
+      // get rid of brackets and trailing/ending spaces
+      let prefixAndTagname = prefix
+        .replace("[[", "")
+        .replace("]]", "")
+        .trim()
+        .split(" ");
+
+      if (prefixAndTagname.length > 2) {
+        return {
+          helper: "",
+          tagname: "",
+          error: "too much elements",
+        };
+      }
+
+      return {
+        helper: prefixAndTagname[0],
+        tagname: prefixAndTagname[1],
+        error: "",
+      };
     },
 
     async waitFor(ms) {
