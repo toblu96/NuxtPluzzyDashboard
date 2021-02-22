@@ -51,6 +51,18 @@ export default function (context, inject) {
         Handlebars.registerHelper("uppercase", function (aString) {
             return aString.toString().toUpperCase();
         });
+        Handlebars.registerHelper("0digit", function (aString) {
+            return parseFloat(aString).toFixed(0)
+        });
+        Handlebars.registerHelper("1digit", function (aString) {
+            return parseFloat(aString).toFixed(1)
+        });
+        Handlebars.registerHelper("2digit", function (aString) {
+            return parseFloat(aString).toFixed(2)
+        });
+        Handlebars.registerHelper("3digit", function (aString) {
+            return parseFloat(aString).toFixed(3)
+        });
     }
 
 
