@@ -89,7 +89,6 @@ export default {
     },
     matchCurrentNavPath() {
       this.navIndex = 0;
-      console.log($nuxt.$route);
       for (let item of this.navigationItems) {
         if (
           $nuxt.$route.matched.some(({ path }) => path.includes(item.navLink))

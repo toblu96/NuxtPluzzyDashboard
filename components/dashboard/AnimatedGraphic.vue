@@ -156,7 +156,6 @@ export default {
         if (!this.isValidPrefix(node.id)) continue;
         let { helper, tagname, error } = this.unwrapHelper(node.id);
         if (helper == "graph") {
-          console.log("graph");
           d3.select('[id="svgImage"]')
             .select("svg")
             .append("foreignObject")
@@ -189,7 +188,6 @@ export default {
           let tagValue = await this.$timedb.getLastEntry(tagname);
           let visibleState = tagValue ? "visible" : "hidden";
           d3.select(node).attr("visibility", visibleState);
-          console.log("new State");
         }
       }
     },
