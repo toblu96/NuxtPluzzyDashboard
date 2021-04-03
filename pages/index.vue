@@ -53,9 +53,9 @@
     <div
       class="flex flex-col justify-center mt-3 p-1 sm:p-6 border-2 border-gray-300 border-dashed rounded-md"
     >
-      <animated-graphic
-        v-if="images[0] != undefined"
-        :imagePath="images[activeImageIndex].path"
+      <LazyAnimatedGraphic
+        v-if="!!images[0]"
+        :imagePath="images[activeImageIndex]"
       />
     </div>
   </div>
@@ -69,6 +69,7 @@ export default {
     return {
       images: [],
       activeImageIndex: 0,
+      activeImage: null,
     };
   },
   mounted() {

@@ -63,7 +63,7 @@
 
                 <span class="block">
                   <h2 class="text-sm font-medium">
-                    <a href="#">
+                    <a :href="gitlabFilePath(file.path)" target="_blank">
                       <span class="absolute inset-0" aria-hidden="true"></span>
                       {{ file.name }} <span class="sr-only">Running</span>
                     </a>

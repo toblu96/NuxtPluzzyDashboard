@@ -40,13 +40,13 @@ export default {
   },
   watch: {
     imagePath: async function (newVal, oldVal) {
-      await this.reloadImage(this.imagePath);
+      await this.reloadImage(this.imagePath.path);
       await this.reloadValues();
       // this.resetImageSize();
     },
   },
   async mounted() {
-    await this.reloadImage(this.imagePath);
+    await this.reloadImage(this.imagePath.path);
     await this.reloadValues();
   },
   created() {
