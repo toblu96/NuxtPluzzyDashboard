@@ -167,14 +167,9 @@
       <div class="py-4 border-t border-pink-600">
         <div v-if="$auth.loggedIn" class="px-2">
           <NuxtLink
-            to="/"
-            class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-pink-200 hover:text-pink-100 hover:bg-pink-600"
-            >Dashboard
-          </NuxtLink>
-          <NuxtLink
             to="/project"
             class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-pink-200 hover:text-pink-100 hover:bg-pink-600"
-            >Project
+            >Getting Started
           </NuxtLink>
           <NuxtLink
             to="/settings"
