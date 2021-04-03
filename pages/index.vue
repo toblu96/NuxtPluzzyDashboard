@@ -1,11 +1,11 @@
 <template>
   <div class="py-12 mx-auto">
     <!-- second header -->
-    <div class="pb-5 border-b border-gray-200 sm:pb-0">
+    <div class="pb-5 sm:pb-0">
       <h3 class="text-lg leading-6 font-medium text-gray-900">
         Animated Graphics
       </h3>
-      <div class="flex w-full mt-3 sm:mt-4">
+      <div class="flex w-full justify-between mt-3 sm:mt-4">
         <!-- Dropdown menu on small screens -->
         <div class="sm:hidden">
           <label for="selected-tab" class="sr-only">Select a tab</label>
@@ -25,7 +25,7 @@
           </select>
         </div>
         <!-- Tabs at small breakpoint and up -->
-        <div class="hidden sm:block flex-grow w-96">
+        <div class="hidden sm:block flex-grow w-96 border-b border-gray-200">
           <nav class="-mb-px flex space-x-8 overflow-x-auto">
             <button
               v-for="(image, idx) in images"
@@ -43,7 +43,7 @@
           </nav>
         </div>
         <refresh-dropdown
-          class="flex-shrink-0 w-32"
+          class="flex-shrink-0 ml-4"
           :refreshCycles="[0, 5, 10, 15, 30]"
         />
       </div>

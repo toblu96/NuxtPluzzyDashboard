@@ -1,40 +1,43 @@
 <template>
-  <div>
-    <span class="relative ml-5 z-0 inline-flex shadow-sm rounded-md">
-      <div
-        class="inline-flex items-center w-16 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700"
+  <div v-click-away="'close'" @keydown.esc="close">
+    <span class="relative z-0 inline-flex shadow-sm rounded-md">
+      <button
+        v-if="refreshCycle == 0"
+        @click="refreshInterval(0)"
+        type="button"
+        class="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-pink-500 focus:border-pink-500"
       >
-        <!-- Refresh button -->
-        <button
-          v-if="refreshCycle == 0"
-          @click="refreshInterval(0)"
-          type="button"
-          class="inline-flex w-full justify-center py-2 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+        <svg
+          class="w-5 h-5"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <svg
-            class="w-5 h-5"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
-              clip-rule="evenodd"
-            ></path>
-          </svg>
-        </button>
-        <p v-else class="mx-auto">{{ refreshCycle }} s</p>
+          <path
+            fill-rule="evenodd"
+            d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+      </button>
+      <div
+        v-else
+        type="button"
+        class="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700"
+      >
+        <p class="mx-auto">{{ refreshCycle }} s</p>
       </div>
       <span class="-ml-px relative block">
         <button
           @click="showDropdown = !showDropdown"
-          id="option-menu"
           type="button"
-          class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+          class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-pink-500 focus:border-pink-500"
+          id="option-menu"
+          aria-expanded="true"
+          aria-haspopup="true"
         >
-          <span class="sr-only">Open options</span>
-          <!-- Heroicon name: chevron-down -->
+          <span class="sr-only">Open refresh interval list</span>
+          <!-- Heroicon name: solid/chevron-down -->
           <svg
             class="h-5 w-5"
             xmlns="http://www.w3.org/2000/svg"
@@ -49,6 +52,7 @@
             />
           </svg>
         </button>
+
         <transition
           enter-active-class="transition ease-out duration-100 transform"
           enter-class="opacity-0 scale-95"
@@ -59,14 +63,12 @@
         >
           <div
             v-show="showDropdown"
-            class="origin-top-right absolute z-50 right-0 mt-2 -mr-1 w-24 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+            class="origin-top-right absolute right-0 mt-2 -mr-1 w-20 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+            role="menu"
+            aria-orientation="vertical"
+            aria-labelledby="option-menu"
           >
-            <div
-              class="py-1"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="option-menu"
-            >
+            <div class="py-1" role="none">
               <button
                 v-for="cycle in refreshCycles"
                 :key="cycle"
@@ -89,7 +91,12 @@
 </template>
 
 <script>
+import ClickAway from "~/directives/click-away";
+
 export default {
+  directives: {
+    "click-away": ClickAway,
+  },
   props: {
     refreshCycles: {
       type: Array,
@@ -119,6 +126,9 @@ export default {
           self.$nuxt.$emit("refresh-dropdown-trigger-event");
         }, interval * 1000);
       }
+    },
+    close() {
+      this.showDropdown = false;
     },
   },
 };
