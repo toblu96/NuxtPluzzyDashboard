@@ -159,7 +159,7 @@
 
 <script>
 export default {
-  layout: "application",
+  layout: "application-second-nav",
 };
 </script>
 

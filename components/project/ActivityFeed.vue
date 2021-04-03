@@ -1,5 +1,5 @@
 <template>
-  <div class="lg:w-80">
+  <div>
     <div class="pt-6 pb-2">
       <h2 class="text-sm font-semibold">Activity</h2>
     </div>

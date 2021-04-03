@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-gray-50">
     <application-navbar />
     <header v-if="$auth.loggedIn" class="bg-gray-50 shadow-sm mb-0.5">
-      <div class="sm:hidden p-4">
+      <div class="lg:hidden p-4">
         <label for="tabs" class="sr-only">Select a tab</label>
         <select
           @change="navigateToIndex($event.target.selectedIndex)"
@@ -20,16 +20,26 @@
         </select>
       </div>
       <div
-        class="hidden sm:flex max-w-7xl mx-auto space-x-4 py-4 px-4 sm:px-6 lg:px-8"
+        class="hidden lg:flex max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 justify-between"
       >
+        <div class="space-x-4">
+          <NuxtLink
+            v-for="item in navigationItems"
+            :key="item.index"
+            :to="item.navLink"
+            :class="
+              navIndex == item.index ? 'bg-orange-100 text-orange-900' : ''
+            "
+            class="rounded-md py-2 px-3 inline-flex items-center text-sm font-medium text-gray-900 bg-gray-100 hover:bg-gray-200 hover:text-gray-900"
+          >
+            {{ item.name }}
+          </NuxtLink>
+        </div>
         <NuxtLink
-          v-for="item in navigationItems"
-          :key="item.index"
-          :to="item.navLink"
-          :class="navIndex == item.index ? 'bg-orange-100 text-orange-900' : ''"
-          class="rounded-md py-2 px-3 inline-flex items-center text-sm font-medium text-gray-900 bg-gray-100 hover:bg-gray-200 hover:text-gray-900"
+          to="/project"
+          class="rounded-md py-2 px-3 inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-800 border border-gray-200 hover:border-gray-300"
         >
-          {{ item.name }}
+          Getting Started
         </NuxtLink>
       </div>
     </header>
@@ -89,6 +99,13 @@ export default {
     },
     matchCurrentNavPath() {
       this.navIndex = 0;
+
+      // catch getting started page which has no nav index
+      if ($nuxt.$route.fullPath === "/project") {
+        this.navIndex = -1;
+        return;
+      }
+
       for (let item of this.navigationItems) {
         if (
           $nuxt.$route.matched.some(({ path }) => path.includes(item.navLink))
