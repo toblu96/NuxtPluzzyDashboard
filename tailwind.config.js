@@ -15,6 +15,9 @@ module.exports = {
         cyan: colors.cyan,
         orange: colors.orange,
       },
+      height: {
+        halfview: '50vh',
+      },
       minHeight: {
         '20': '5rem',
         '56': '14rem',

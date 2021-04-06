@@ -60,53 +60,127 @@
         <!-- tag search list -->
         <div class="w-2/5">
           <!-- checkbox groups -->
-          <fieldset class="space-y-1">
-            <div class="flex items-center space-x-3 px-4">
-              <input
-                v-model="selectAll"
-                type="checkbox"
-                class="focus:ring-orange-500 h-4 w-4 text-orange-600 border-gray-300 rounded"
-              />
-
-              <legend class="text-base font-medium text-gray-900">
-                Available Data Tags
-              </legend>
-            </div>
-
-            <div
-              v-for="tag in configFile.nodes"
-              :key="tag.id"
-              class="hover:bg-orange-100 rounded-md"
-            >
-              <!-- On: "bg-indigo-50 border-indigo-200 z-10", Off: "border-gray-200" -->
-              <div class="relative rounded-md p-4 flex">
-                <!-- <span aria-hidden="true" class="absolute inset-0"></span> -->
-                <div class="flex items-center h-5">
+          <nav class="space-y-1 bg-gray-200 rounded-md p-4">
+            <div class="space-y-4">
+              <!-- Search input -->
+              <div>
+                <label for="search" class="sr-only">Search Data Tags</label>
+                <div class="mt-1 relative rounded-md shadow-sm">
+                  <div
+                    class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                    aria-hidden="true"
+                  >
+                    <!-- Heroicon name: search -->
+                    <svg
+                      class="mr-3 h-4 w-4 text-gray-400"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </div>
                   <input
-                    :id="`${tag.Name}-0`"
-                    :name="`${tag.Name}-0`"
-                    :value="tag.Name"
-                    v-model="panelNodes"
-                    type="checkbox"
-                    class="focus:ring-orange-500 h-4 w-4 text-orange-600 border-gray-300 rounded"
+                    type="search"
+                    name="search"
+                    id="search"
+                    class="focus:ring-pink-500 focus:border-pink-500 block w-full pl-9 sm:text-sm border-gray-300 rounded-md"
+                    placeholder="Search tags"
+                    v-model="searchString"
+                    ref="searchInput"
+                    @keydown.esc="
+                      $refs.searchInput.blur();
+                      searchString = '';
+                    "
                   />
                 </div>
-                <label
-                  :for="`${tag.Name}-0`"
-                  class="ml-3 flex flex-col cursor-pointer"
-                >
-                  <!-- On: "text-indigo-900", Off: "text-gray-900" -->
-                  <span class="block text-sm text-gray-600 font-medium">
-                    {{ tag.Name }}
-                  </span>
-                  <!-- On: "text-indigo-700", Off: "text-gray-500" -->
-                  <span class="block text-sm text-gray-500 truncate w-60">
-                    {{ tag.Description }}
-                  </span>
-                </label>
+              </div>
+
+              <div class="flex items-center space-x-3 px-4">
+                <input
+                  v-model="selectAll"
+                  type="checkbox"
+                  class="focus:ring-orange-500 h-4 w-4 text-orange-600 border-gray-300 rounded"
+                />
+
+                <legend class="text-base font-medium text-gray-900">
+                  Available Data Tags
+                </legend>
               </div>
             </div>
-          </fieldset>
+
+            <!-- Tag checkboxes -->
+            <fieldset class="h-halfview overflow-y-auto">
+              <label
+                v-for="tag in filteredSearch(configFile.nodes, searchString)"
+                :for="`${tag.Name}-0`"
+                :key="tag.id"
+                class="hover:bg-orange-100 relative border p-4 flex rounded-md mr-4 cursor-pointer"
+              >
+                <input
+                  :id="`${tag.Name}-0`"
+                  :name="`${tag.Name}-0`"
+                  :value="tag.Name"
+                  v-model="panelNodes"
+                  type="checkbox"
+                  class="focus:ring-orange-500 h-4 w-4 text-orange-600 border-gray-300 rounded"
+                />
+                <div class="ml-3 flex flex-col">
+                  <!-- Checked: "text-indigo-900", Not Checked: "text-gray-900" -->
+                  <span
+                    id="privacy-setting-0-label"
+                    class="text-gray-600 block text-sm font-medium"
+                  >
+                    {{ tag.Name }}
+                  </span>
+                  <!-- Checked: "text-indigo-700", Not Checked: "text-gray-500" -->
+                  <span
+                    id="privacy-setting-0-description"
+                    class="text-gray-500 block text-sm"
+                  >
+                    {{ tag.Description }}
+                  </span>
+                </div>
+              </label>
+
+              <!-- Empty state notification -->
+              <div
+                v-show="
+                  filteredSearch(configFile.nodes, searchString).length === 0
+                "
+                class="rounded-md bg-red-50 p-4 ml-4"
+              >
+                <div class="flex">
+                  <div class="flex-shrink-0">
+                    <!-- Heroicon name: solid/x-circle -->
+                    <svg
+                      class="h-5 w-5 text-red-400"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <div class="ml-3">
+                    <h3 class="text-sm font-medium text-red-800">
+                      No tags found..
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </nav>
         </div>
         <!-- grafana panel list -->
         <div class="w-full space-y-4">
@@ -117,8 +191,17 @@
             :src="`${$config.GRAFANA_BASEURL}/d-solo/1sIiLXaGz/public-dashboard?orgId=1&var-TagName=${node}&theme=light&panelId=4&refresh=10s`"
           ></iframe>
 
-          <div v-if="panelNodes.length == 0">
-            There are no tags selected. Please select a data tag from the list.
+          <div
+            v-show="panelNodes.length == 0"
+            class="flex w-full justify-center bg-white rounded-md p-4"
+          >
+            <div class="w-full sm:w-1/2">
+              <img class="my-8" src="~/assets/images/search-not-found.svg" />
+              <h3 class="text-sm font-medium">
+                There are no tags selected. Please select a data tag from the
+                list.
+              </h3>
+            </div>
           </div>
         </div>
       </div>
@@ -140,6 +223,7 @@ export default {
   data: function () {
     return {
       configFile: {},
+      searchString: "",
       panelNodes: [],
       isLoaded: false,
     };
@@ -178,8 +262,8 @@ export default {
       }
     },
   },
-  async mounted() {
-    await this.$store.commit("gitFiles/updateConfigFiles");
+  mounted() {
+    this.$store.commit("gitFiles/updateConfigFiles");
   },
   methods: {
     async getTimedbTags(filename) {
@@ -198,6 +282,11 @@ export default {
         this.panelNodes.push(this.configFile.nodes[0].Name);
 
       this.isLoaded = true;
+    },
+    filteredSearch(data, searchString) {
+      return data.filter((data) =>
+        data.Name.toLowerCase().includes(searchString.toLowerCase())
+      );
     },
   },
 };
