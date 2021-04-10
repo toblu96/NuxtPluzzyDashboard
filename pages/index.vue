@@ -1,5 +1,5 @@
 <template>
-  <div class="py-12 mx-auto">
+  <div class="pt-8 mx-auto">
     <!-- second header -->
     <div class="pb-5 sm:pb-0">
       <h3 class="text-lg leading-6 font-medium text-gray-900">
@@ -96,15 +96,4 @@ export default {
 </script>
 
 <style>
-::-webkit-scrollbar-track {
-  @apply bg-gray-100 rounded-full;
-}
-
-::-webkit-scrollbar {
-  @apply h-2 w-2 bg-transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply h-2 w-2 bg-gray-300 rounded-full;
-}
 </style>
