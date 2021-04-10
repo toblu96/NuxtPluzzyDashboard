@@ -60,7 +60,7 @@
         <!-- tag search list -->
         <div class="w-2/5">
           <!-- checkbox groups -->
-          <nav class="space-y-1 bg-gray-200 rounded-md p-4">
+          <nav class="sticky top-4 space-y-1 bg-gray-200 rounded-md p-4">
             <div class="space-y-4">
               <!-- Search input -->
               <div>
