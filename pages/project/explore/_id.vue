@@ -58,7 +58,7 @@
       <!-- content -->
       <div v-else class="flex flex-col md:flex-row md:space-x-4 w-full">
         <!-- tag search list -->
-        <div class="w-2/5">
+        <div class="md:w-2/5 mb-4">
           <!-- checkbox groups -->
           <nav class="sticky top-4 space-y-1 bg-gray-200 rounded-md p-4">
             <div class="space-y-4">
@@ -115,7 +115,7 @@
             </div>
 
             <!-- Tag checkboxes -->
-            <fieldset class="h-halfview overflow-y-auto">
+            <fieldset class="h-96 md:h-halfview overflow-y-auto">
               <label
                 v-for="tag in filteredSearch(configFile.nodes, searchString)"
                 :for="`${tag.Name}-0`"

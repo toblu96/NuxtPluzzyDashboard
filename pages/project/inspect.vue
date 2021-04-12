@@ -3,7 +3,7 @@
     <!-- content -->
     <div class="flex flex-col md:flex-row md:space-x-4 w-full">
       <!-- Subsystems list -->
-      <div class="sm:w-2/5 mb-8 sm:mb-4">
+      <div class="md:sticky md:top-4 md:h-halfview md:w-2/5 mb-8 md:mb-4">
         <div>
           <div class="flow-root mt-6">
             <ul class="-my-5 divide-y divide-gray-200">
