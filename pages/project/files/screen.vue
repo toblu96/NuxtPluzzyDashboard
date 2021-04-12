@@ -66,6 +66,7 @@
               <div class="hidden sm:flex itemsd-center space-x-4">
                 <div class="group relative">
                   <button
+                    :disabled="file.isDeleting"
                     @click="$store.commit('gitFiles/deleteFile', file.path)"
                     class="flex items-center space-x-1 text-sm text-gray-500 group-hover:text-gray-900 font-medium focus:outline-none"
                   >
@@ -201,11 +202,6 @@
 import { mapGetters } from "vuex";
 
 export default {
-  data: function () {
-    return {
-      refreshIntervalID: null,
-    };
-  },
   computed: {
     ...mapGetters({
       files: "gitFiles/getGraphicFiles",
@@ -214,27 +210,9 @@ export default {
     }),
   },
   async mounted() {
-    this.refreshInterval(5);
-  },
-  beforeDestroy: function () {
-    this.stopInterval();
+    this.$store.commit("gitFiles/updateGraphicFiles");
   },
   methods: {
-    stopInterval() {
-      clearInterval(this.refreshIntervalID);
-    },
-    refreshInterval(interval) {
-      let self = this;
-      this.stopInterval();
-
-      self.$store.commit("gitFiles/updateGraphicFiles");
-      if (interval != 0) {
-        console.log("just created a new interval [" + interval + "s]");
-        this.refreshIntervalID = setInterval(async function () {
-          self.$store.commit("gitFiles/updateGraphicFiles");
-        }, interval * 1000);
-      }
-    },
     gitlabFilePath(filename) {
       return (
         this.$config.GITLAB_BASEURL +

@@ -119,6 +119,7 @@
               <div class="flex items-center space-x-4">
                 <div class="group relative">
                   <button
+                    :disabled="file.isDeleting"
                     @click="$store.commit('gitFiles/deleteFile', file.path)"
                     class="flex items-center space-x-1 text-sm text-gray-500 group-hover:text-gray-900 font-medium focus:outline-none"
                   >
@@ -175,6 +176,16 @@
           src="~/assets/images/search-not-found.svg"
         />
         <div
+          v-if="searchString === ''"
+          class="flex flex-col sm:flex-row sm:space-x-3 space-y-3 sm:space-y-0 text-sm"
+        >
+          <p class="flex-auto">
+            There are currently no Data Connections loaded. Please import a MSR
+            List.
+          </p>
+        </div>
+        <div
+          v-else
           class="flex flex-col sm:flex-row sm:space-x-3 space-y-3 sm:space-y-0 text-sm"
         >
           <p class="flex-auto">Can't find any files with the name containing</p>
@@ -193,11 +204,6 @@
 import { mapGetters } from "vuex";
 
 export default {
-  data: function () {
-    return {
-      refreshIntervalID: null,
-    };
-  },
   computed: {
     ...mapGetters({
       files: "gitFiles/getConfigFiles",
@@ -206,27 +212,9 @@ export default {
     }),
   },
   async mounted() {
-    this.refreshInterval(5);
-  },
-  beforeDestroy: function () {
-    this.stopInterval();
+    this.$store.commit("gitFiles/updateConfigFiles");
   },
   methods: {
-    stopInterval() {
-      clearInterval(this.refreshIntervalID);
-    },
-    refreshInterval(interval) {
-      let self = this;
-      this.stopInterval();
-
-      self.$store.commit("gitFiles/updateConfigFiles");
-      if (interval != 0) {
-        console.log("just created a new interval [" + interval + "s]");
-        this.refreshIntervalID = setInterval(async function () {
-          self.$store.commit("gitFiles/updateConfigFiles");
-        }, interval * 1000);
-      }
-    },
     gitlabFilePath(filename) {
       return (
         this.$config.GITLAB_BASEURL +
