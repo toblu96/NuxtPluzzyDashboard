@@ -2,6 +2,7 @@ export const state = () => ({
     configFiles: [],
     graphicFiles: [],
     searchString: '',
+    commitMessages: [],
     loaded: false,
 })
 
@@ -106,6 +107,32 @@ export const mutations = {
         if (shouldUpdate == 'graphic')
             this.commit("gitFiles/updateGraphicFiles");
     },
+    async updateCommitMessages(state) {
+        // get Project Files
+        const responses = await Promise.all([this.$gitApi.getProjectCommits()]);
+        const badResponse = responses.find((response) => !response.ok);
+        if (badResponse) {
+            return $nuxt.error({
+                statusCode: badResponse.status,
+                message: badResponse.statusText,
+            });
+        }
+
+        // only get a few ones (loading time..)
+        const commits = responses[0].json.slice(0, 5);
+
+        //   add avatar url
+        await Promise.all(
+            commits.map(async (commit, index) => {
+                const avatarUrl = await this.$gitApi.getUserAvatar(
+                    commit.author_email
+                );
+                commits[index].avatar_url = avatarUrl.json.avatar_url;
+            })
+        );
+
+        state.commitMessages = commits;
+    },
 
 
     updateSearchString(state, searchString) {
@@ -124,6 +151,9 @@ export const getters = {
     },
     getSearchString: (state) => {
         return state.searchString
+    },
+    getCommitMessages: (state) => {
+        return state.commitMessages
     },
     isLoaded: (state) => {
         return state.loaded

@@ -15,6 +15,7 @@ export default async function (context, inject) {
             case "gitlab commit":
                 context.store.commit("gitFiles/updateConfigFiles");
                 context.store.commit("gitFiles/updateGraphicFiles");
+                context.store.commit("gitFiles/updateCommitMessages");
                 break;
             default:
                 console.log(`[ws] Websocket topic "${data.topic}" not handled..`);

@@ -3,9 +3,9 @@
     <div class="pt-6 pb-2">
       <h2 class="text-sm font-semibold">Activity</h2>
     </div>
-    <div v-if="commits[0] != undefined">
+    <div v-if="commitMessages[0] != undefined">
       <ul class="divide-y divide-gray-200">
-        <li v-for="commit in commits" :key="commit.id" class="py-4">
+        <li v-for="commit in commitMessages" :key="commit.id" class="py-4">
           <div class="flex space-x-3">
             <img class="h-6 w-6 rounded-full" :src="commit.avatar_url" alt="" />
             <div class="flex-1 space-y-1">
@@ -51,42 +51,16 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
-  data: function () {
-    return {
-      commits: [],
-    };
+  computed: {
+    ...mapGetters({
+      commitMessages: "gitFiles/getCommitMessages",
+    }),
   },
   async mounted() {
-    await this.getCommits();
-  },
-  methods: {
-    async getCommits() {
-      // get Project Files
-      const responses = await Promise.all([this.$gitApi.getProjectCommits()]);
-      const badResponse = responses.find((response) => !response.ok);
-      if (badResponse) {
-        return $nuxt.error({
-          statusCode: badResponse.status,
-          message: badResponse.statusText,
-        });
-      }
-
-      // only get a few ones (loading time..)
-      const commits = responses[0].json.slice(0, 5);
-
-      //   add avatar url
-      await Promise.all(
-        commits.map(async (commit, index) => {
-          const avatarUrl = await this.$gitApi.getUserAvatar(
-            commit.author_email
-          );
-          commits[index].avatar_url = avatarUrl.json.avatar_url;
-        })
-      );
-
-      this.commits = commits;
-    },
+    this.$store.commit("gitFiles/updateCommitMessages");
   },
 };
 </script>
