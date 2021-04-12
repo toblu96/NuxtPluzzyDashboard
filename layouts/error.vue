@@ -68,6 +68,15 @@
 <script>
 export default {
   props: ["error"],
+  mounted() {
+    // try to bypass the revoket token from GitLab
+    if (this.error.statusCode == 401 && this.error.message == "Unauthorized") {
+      console.log("try to reauthenticate ");
+      setTimeout(function () {
+        $nuxt._router.go();
+      }, 100);
+    }
+  },
 };
 </script>
 
