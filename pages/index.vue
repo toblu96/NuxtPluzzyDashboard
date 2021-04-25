@@ -96,4 +96,15 @@ export default {
 </script>
 
 <style>
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 rounded-full;
+}
+
+::-webkit-scrollbar {
+  @apply h-2 w-2 bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply h-2 w-2 bg-gray-300 rounded-full;
+}
 </style>
